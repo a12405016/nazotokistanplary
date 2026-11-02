@@ -35,53 +35,37 @@
 </head>
 
 <body>
-  <title>キャンパス謎解きラリー</title>
+  <title>挑戦状</title>
   <meta name="claude:viewport-fit-sides" content="cover">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@500&display=swap">
-  <meta name="description" content="キャンパス謎解きラリーの試作です。5つのスポットを探してクイズに答え、スタンプを集めます。">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="キャンパス謎解きラリー">
-  <meta noindex name="robots" content="noindex">
+    href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Cormorant+Garamond:wght@500;600&display=swap">
   <style>
+    /* Layout: ポスターと同じ、黒い地に赤い明朝の大見出し。クイズだけは「スポットライトが当たった」明るい灰色の紙面にして、黒との対比をつくる。1カラムのスマホ縦画面が基準。 */
     :root {
-      --bg: #eef1f6;
-      --surface: #ffffff;
-      --ink: #17233b;
-      --muted: #5d6a82;
-      --line: #d3d9e4;
-      --accent: #2c55e0;
-      --accent-ink: #ffffff;
-      --stamp: #e0472b;
-      --stamp-soft: #fde8e3;
-      --ok: #17803d;
-      --ok-soft: #dff3e6;
-      --warn: #9a5b00;
-      --warn-soft: #fbeccd;
-      --font-display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
-      --font-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
-      --font-mono: "DM Mono", ui-monospace, "SF Mono", monospace;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #0f1626;
-        --surface: #19223a;
-        --ink: #e8edf8;
-        --muted: #9aa8c4;
-        --line: #2c3a58;
-        --accent: #7d9bff;
-        --accent-ink: #0f1626;
-        --stamp: #ff7a5f;
-        --stamp-soft: #3a2420;
-        --ok: #6fd392;
-        --ok-soft: #173325;
-        --warn: #f0b95a;
-        --warn-soft: #3a2d12;
-        color-scheme: dark;
-      }
+      --bg: #0a0a0b;
+      --surface: #131315;
+      --raised: #1d1d20;
+      --ink: #f2f0ee;
+      --muted: #a3a0a2;
+      --line: #333236;
+      --red: #c1272d;
+      --red-text: #ee5256;
+      --red-soft: #351214;
+      --on-red: #ffffff;
+      --paper: #e3e3e3;
+      --paper-ink: #111111;
+      --paper-sub: #4d4d4d;
+      --paper-line: #b5b5b5;
+      --ok: #6fd392;
+      --ok-soft: #123226;
+      --warn: #f0b95a;
+      --warn-soft: #3a2d12;
+      --font-display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+      --font-num: "Cormorant Garamond", "Shippori Mincho B1", serif;
+      color-scheme: dark;
     }
 
     * {
@@ -89,12 +73,14 @@
     }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1.3px);
+      background-size: 6px 6px;
       color: var(--ink);
       font-family: var(--font-body);
       font-size: 15px;
-      line-height: 1.7;
-      padding-block: 12px 40px;
+      line-height: 1.8;
+      padding-block: 12px 48px;
       padding-left: max(16px, env(safe-area-inset-left, 0px));
       padding-right: max(16px, env(safe-area-inset-right, 0px));
     }
@@ -115,8 +101,10 @@
     h2,
     h3 {
       font-family: var(--font-display);
+      font-weight: 800;
       margin: 0;
-      line-height: 1.35;
+      line-height: 1.4;
+      letter-spacing: .06em;
       text-wrap: balance;
     }
 
@@ -129,8 +117,12 @@
       cursor: pointer;
     }
 
+    a {
+      color: inherit;
+    }
+
     :focus-visible {
-      outline: 3px solid var(--accent);
+      outline: 3px solid var(--red-text);
       outline-offset: 2px;
     }
 
@@ -139,7 +131,6 @@
       gap: 4px;
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 12px;
       padding: 4px;
     }
 
@@ -149,7 +140,6 @@
       background: transparent;
       color: var(--muted);
       padding: 8px 10px;
-      border-radius: 9px;
       font-weight: 700;
       min-height: 40px;
     }
@@ -165,67 +155,61 @@
       text-align: center;
     }
 
-    .hero {
-      background: var(--ink);
-      color: var(--bg);
-      border-radius: 18px;
-      padding: 24px 20px;
+    .poster {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      border: 1px solid var(--line);
+    }
+
+    .band {
+      background: var(--red);
+      color: var(--on-red);
+      padding: 26px 20px 28px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
+      gap: 8px;
+      border-radius: 0 0 50% 50% / 0 0 22px 22px;
+      text-align: center;
     }
 
-    .hero .tag {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: .12em;
-      color: var(--stamp);
+    .band .tag {
+      font-family: var(--font-num);
+      font-size: 14px;
+      letter-spacing: .3em;
+      opacity: .9;
     }
 
-    .hero h1 {
-      font-size: 30px;
-      font-weight: 900;
-      color: var(--bg);
-    }
-
-    .hero p {
-      color: var(--bg);
-      opacity: .85;
-    }
-
-    .hero .ring {
-      position: absolute;
-      right: -34px;
-      top: -34px;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 3px dashed var(--stamp);
-      opacity: .55;
-      transform: rotate(-12deg);
+    .band h1 {
+      font-size: 34px;
+      line-height: 1.3;
     }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 16px;
       padding: 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
+    .card h2 {
+      font-size: 18px;
+    }
+
     .info {
       display: grid;
       grid-template-columns: 5.5em 1fr;
-      gap: 6px 10px;
+      gap: 10px 10px;
       font-size: 14px;
+      margin: 0;
     }
 
     .info dt {
-      color: var(--muted);
+      color: var(--red-text);
+      font-family: var(--font-display);
       font-weight: 700;
     }
 
@@ -235,25 +219,31 @@
     }
 
     .btn {
+      display: block;
       border: 0;
-      border-radius: 12px;
-      background: var(--accent);
-      color: var(--accent-ink);
-      font-weight: 700;
+      background: var(--red);
+      color: var(--on-red);
+      font-family: var(--font-display);
+      font-weight: 800;
       padding: 14px 18px;
-      min-height: 52px;
-      font-size: 16px;
+      min-height: 54px;
+      font-size: 17px;
       width: 100%;
+      letter-spacing: .12em;
+      text-align: center;
+      text-decoration: none;
     }
 
     .btn.ghost {
       background: transparent;
-      color: var(--accent);
-      border: 2px solid var(--accent);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-weight: 700;
+      letter-spacing: .06em;
     }
 
     .btn:disabled {
-      background: var(--line);
+      background: var(--raised);
       color: var(--muted);
       cursor: not-allowed;
     }
@@ -263,36 +253,42 @@
       color: var(--muted);
     }
 
+    .footer {
+      text-align: center;
+      font-family: var(--font-display);
+      letter-spacing: .3em;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .progress {
       display: flex;
-      align-items: baseline;
+      align-items: flex-end;
       justify-content: space-between;
     }
 
     .progress .n {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 44px;
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 60px;
       line-height: 1;
     }
 
     .progress .n small {
-      font-size: 22px;
+      font-size: 26px;
       color: var(--muted);
     }
 
     .bar {
-      height: 10px;
-      background: var(--line);
-      border-radius: 999px;
+      height: 6px;
+      background: var(--raised);
       overflow: hidden;
     }
 
     .bar i {
       display: block;
       height: 100%;
-      background: var(--stamp);
-      border-radius: 999px;
+      background: var(--red);
       transition: width .4s;
     }
 
@@ -308,19 +304,18 @@
       display: grid;
       place-items: center;
       font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 18px;
-      border: 2.5px dashed var(--line);
+      font-weight: 800;
+      font-size: 22px;
+      border: 1px dashed var(--muted);
       color: var(--muted);
-      background: transparent;
     }
 
     .slot.got {
-      border: 3px solid var(--stamp);
-      color: var(--stamp);
-      background: var(--stamp-soft);
+      border: 0;
+      color: var(--on-red);
+      background: var(--red);
       transform: rotate(-8deg);
-      box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4.5px var(--stamp);
+      box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4.5px var(--red-text);
     }
 
     .slot.got:nth-child(even) {
@@ -332,9 +327,8 @@
       grid-template-columns: 44px 1fr auto;
       gap: 12px;
       align-items: center;
-      padding: 12px;
+      padding: 10px 14px 10px 10px;
       border: 1px solid var(--line);
-      border-radius: 14px;
       background: var(--surface);
     }
 
@@ -345,30 +339,27 @@
       display: grid;
       place-items: center;
       font-family: var(--font-display);
-      font-weight: 900;
-      border: 2.5px dashed var(--line);
+      font-weight: 800;
+      border: 1px dashed var(--muted);
       color: var(--muted);
     }
 
     .spot.done .no {
-      border: 3px solid var(--stamp);
-      color: var(--stamp);
-      background: var(--stamp-soft);
+      border: 0;
+      background: var(--red);
+      color: var(--on-red);
     }
 
-    .spot .t {
-      min-width: 0;
-    }
-
-    .spot .t b {
-      display: block;
+    .spot b {
       font-family: var(--font-display);
+      font-weight: 700;
+      display: block;
+      letter-spacing: .06em;
     }
 
-    .spot .t span {
+    .spot span.s {
       font-size: 13px;
       color: var(--muted);
-      display: block;
     }
 
     .chip {
@@ -377,7 +368,7 @@
       padding: 3px 10px;
       border-radius: 999px;
       white-space: nowrap;
-      background: var(--line);
+      background: var(--raised);
       color: var(--muted);
     }
 
@@ -391,25 +382,61 @@
       color: var(--warn);
     }
 
-    .chip.stamp {
-      background: var(--stamp-soft);
-      color: var(--stamp);
+    .chip.red {
+      background: var(--red-soft);
+      color: var(--red-text);
     }
 
-    .spot .go {
-      border: 2px solid var(--accent);
-      background: transparent;
-      color: var(--accent);
-      border-radius: 10px;
-      font-weight: 700;
+    .sim {
+      border: 1px dashed var(--line);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sim .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sim button {
+      border: 1px solid var(--line);
+      background: var(--raised);
+      color: var(--ink);
       padding: 8px 12px;
       min-height: 44px;
+      font-weight: 700;
+    }
+
+    /* クイズ：スポットライトの紙面 */
+    .paper {
+      background: var(--paper);
+      color: var(--paper-ink);
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .paper .small {
+      color: var(--paper-sub);
+    }
+
+    .qno {
+      font-family: var(--font-num);
+      font-weight: 600;
+      letter-spacing: .25em;
+      font-size: 15px;
+      color: var(--red);
     }
 
     .q {
+      font-family: var(--font-display);
       font-size: 18px;
       font-weight: 700;
-      font-family: var(--font-display);
+      line-height: 1.8;
     }
 
     .choices {
@@ -420,15 +447,15 @@
 
     .choice {
       text-align: left;
-      border: 2px solid var(--line);
-      background: var(--surface);
-      color: var(--ink);
-      border-radius: 12px;
+      border: 1.5px solid var(--paper-line);
+      background: #f3f3f3;
+      color: var(--paper-ink);
       padding: 14px;
       min-height: 54px;
       display: flex;
       gap: 12px;
       align-items: center;
+      font-weight: 500;
     }
 
     .choice .k {
@@ -438,54 +465,99 @@
       border-radius: 50%;
       display: grid;
       place-items: center;
-      background: var(--line);
-      font-family: var(--font-mono);
-      font-size: 13px;
+      background: var(--paper-ink);
+      color: #fff;
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 16px;
     }
 
     .choice[aria-pressed="true"] {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+      background: var(--red);
+      color: var(--on-red);
+      border-color: var(--red);
     }
 
     .choice[aria-pressed="true"] .k {
-      background: var(--accent);
-      color: var(--accent-ink);
+      background: #fff;
+      color: var(--red);
+    }
+
+    .imgph {
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1.5px dashed var(--paper-line);
+      display: grid;
+      place-items: center;
+      color: var(--paper-sub);
+      font-size: 13px;
+      text-align: center;
+      padding: 8px;
+    }
+
+    .imgph svg {
+      width: 38%;
+      height: auto;
+      max-height: 100%;
+    }
+
+    .imggrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .imggrid .choice {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 10px;
+    }
+
+    .imggrid .imgph {
+      aspect-ratio: 4 / 3;
+      border-color: currentColor;
+      color: inherit;
+      opacity: .85;
+    }
+
+    .imggrid .lab {
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
     .result {
       text-align: center;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 12px;
     }
 
     .big-stamp {
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      border: 5px solid var(--stamp);
-      color: var(--stamp);
+      background: var(--red);
+      color: var(--on-red);
       display: grid;
       place-items: center;
-      font-family: var(--font-display);
-      font-weight: 900;
       transform: rotate(-9deg);
-      background: var(--stamp-soft);
-      box-shadow: inset 0 0 0 6px var(--surface), inset 0 0 0 8px var(--stamp);
+      box-shadow: inset 0 0 0 6px var(--surface), inset 0 0 0 8px var(--red-text);
       animation: press .45s ease-out;
     }
 
     .big-stamp b {
-      font-size: 46px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 56px;
       line-height: 1;
       display: block;
     }
 
     .big-stamp span {
-      font-size: 13px;
-      letter-spacing: .1em;
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: .3em;
     }
 
     @keyframes press {
@@ -512,8 +584,9 @@
 
     .verdict {
       font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 22px;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: .2em;
     }
 
     .verdict.ok {
@@ -525,12 +598,52 @@
     }
 
     .expl {
-      background: var(--bg);
-      border-radius: 12px;
+      background: var(--raised);
       padding: 12px 14px;
       text-align: left;
       font-size: 14px;
       width: 100%;
+    }
+
+    .expl h3 {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--red-text);
+      letter-spacing: .2em;
+      margin-bottom: 4px;
+    }
+
+    .draft {
+      font-size: 12px;
+      color: var(--warn);
+    }
+
+    .notice {
+      border-left: 3px solid var(--red);
+      background: var(--red-soft);
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    .codebox {
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 34px;
+      letter-spacing: .2em;
+      text-align: center;
+      background: var(--raised);
+      padding: 6px;
+    }
+
+    .copy {
+      align-self: center;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      padding: 8px 14px;
+      min-height: 44px;
+      font-weight: 700;
     }
 
     label.f {
@@ -541,41 +654,43 @@
       font-size: 14px;
     }
 
-    input[type=email],
     input[type=search],
+    input[type=password],
+    input[type=email],
     input[type=text] {
       font: inherit;
       padding: 12px;
-      border: 2px solid var(--line);
-      border-radius: 10px;
-      background: var(--surface);
+      border: 1px solid var(--line);
+      background: var(--raised);
       color: var(--ink);
       min-height: 48px;
       width: 100%;
     }
 
     .err {
-      color: var(--stamp);
+      color: var(--red-text);
       font-size: 13px;
-      min-height: 1.4em;
+      min-height: 1.5em;
     }
 
-    .notice {
-      border-left: 4px solid var(--accent);
-      background: color-mix(in srgb, var(--accent) 8%, var(--surface));
-      padding: 10px 12px;
-      border-radius: 0 10px 10px 0;
+    input[readonly] {
+      color: var(--muted);
+    }
+
+    .agree {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
       font-size: 14px;
+      cursor: pointer;
     }
 
-    .codebox {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: .18em;
-      text-align: center;
-      background: var(--bg);
-      border-radius: 10px;
-      padding: 8px;
+    .agree input {
+      width: 24px;
+      height: 24px;
+      flex: none;
+      accent-color: var(--red);
+      margin: 2px 0 0;
     }
 
     .stats {
@@ -587,16 +702,15 @@
     .stat {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 14px;
       padding: 12px 14px;
     }
 
     .stat b {
       display: block;
-      font-family: var(--font-display);
-      font-size: 30px;
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 38px;
       line-height: 1.1;
-      font-weight: 900;
     }
 
     .stat span {
@@ -618,9 +732,7 @@
 
     .seg {
       display: flex;
-      border: 2px solid var(--line);
-      border-radius: 10px;
-      overflow: hidden;
+      border: 1px solid var(--line);
     }
 
     .seg button {
@@ -641,13 +753,12 @@
       overflow-x: auto;
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 14px;
     }
 
     table {
       border-collapse: collapse;
       width: 100%;
-      min-width: 720px;
+      min-width: 640px;
       font-size: 14px;
     }
 
@@ -662,7 +773,7 @@
     th {
       font-size: 12px;
       color: var(--muted);
-      background: var(--bg);
+      background: var(--raised);
     }
 
     tr:last-child td {
@@ -671,7 +782,9 @@
 
     td.id,
     td.num {
-      font-family: var(--font-mono);
+      font-family: var(--font-num);
+      font-weight: 600;
+      font-size: 17px;
       font-variant-numeric: tabular-nums;
     }
 
@@ -680,28 +793,27 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      border: 2px dashed var(--line);
+      border: 1px dashed var(--muted);
       vertical-align: middle;
     }
 
     .dot.on {
       border: 0;
-      background: var(--stamp);
+      background: var(--red);
     }
 
     .xbtn {
       border: 0;
-      border-radius: 8px;
       padding: 8px 12px;
       min-height: 40px;
       font-weight: 700;
-      background: var(--accent);
-      color: var(--accent-ink);
+      background: var(--ink);
+      color: var(--bg);
     }
 
     .xbtn.confirm {
-      background: var(--stamp);
-      color: #fff;
+      background: var(--red);
+      color: var(--on-red);
     }
 
     .xbtn:disabled {
@@ -711,18 +823,17 @@
     }
 
     .you {
-      background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+      background: var(--red-soft);
     }
 
     textarea {
       width: 100%;
       min-height: 140px;
-      font-family: var(--font-mono);
+      font-family: ui-monospace, "SF Mono", monospace;
       font-size: 12px;
       padding: 10px;
-      border: 2px solid var(--line);
-      border-radius: 10px;
-      background: var(--surface);
+      border: 1px solid var(--line);
+      background: var(--raised);
       color: var(--ink);
     }
 
@@ -732,229 +843,356 @@
       width: 100%;
     }
   </style>
+
   <div class="wrap" id="chrome">
-    <div class="switch" role="group" aria-label="画面の切り替え">
+    <div class="switch" role="group" aria-label="画面の切り替え（試作用）">
       <button id="tab-p" aria-pressed="true" type="button">参加者の画面</button>
       <button id="tab-a" aria-pressed="false" type="button">運営の画面</button>
     </div>
-    <p class="proto">現在スプレッドシートと連携して本番モードで動作中です。</p>
+    <p class="proto">これは試作です。保存はこのページ内だけで、サーバーにはつながっていません。</p>
   </div>
+
   <div class="wrap" id="app" style="margin-top:16px"></div>
 
   <script>
-    // ★★★ここに手順5で取得する「Google Apps ScriptのWebアプリURL」を貼り付けてください★★★
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwYOuOh3nqBJ5YM5smjo0JCsSojWqn93ml9neG7RSiuApLdyIKTdoh3t4sW1el_NjhCCw/exec";
 
-    const SPOTS = [
-      { id: 1, name: "スポット1", hint: "本を借りに行く建物の入口付近", q: "図書館の本の貸出期間は、一般的に何週間？", c: ["1週間", "2週間", "4週間"], a: 1, ex: "仮の解説：多くの大学図書館では2週間が標準です。" },
-      { id: 2, name: "スポット2", hint: "お昼に人が集まる広い場所", q: "学食で一番人気のメニューはどれ？", c: ["カレー", "うどん", "唐揚げ定食"], a: 0, ex: "仮の解説：この問題と答えは仮です。" },
-      { id: 3, name: "スポット3", hint: "大きな時計が見える広場", q: "大学の創立は何年？", c: ["1920年", "1949年", "1965年"], a: 1, ex: "仮の解説：実際の年は主催者の資料で差し替えます。" },
-      { id: 4, name: "スポット4", hint: "運動する人たちが集まる場所", q: "体育館の中にないものはどれ？", c: ["バスケットゴール", "卓球台", "プール"], a: 2, ex: "仮の解説：この問題は仮です。" },
-      { id: 5, name: "スポット5", hint: "学生の相談に乗ってくれる窓口の近く", q: "学生証をなくしたとき、最初にすることは？", c: ["そのままにする", "窓口に届け出る", "友達に借りる"], a: 1, ex: "仮の解説：実際の手順は大学の案内に合わせます。" }
+    /* ---- クイズ（本番では正解と解説はサーバー側だけに置く） ---- */
+    const BUST = [
+      '<svg viewBox="0 0 80 70" aria-hidden="true"><circle cx="40" cy="22" r="13" fill="currentColor"/><path d="M12 68c0-16 12-26 28-26s28 10 28 26z" fill="currentColor"/></svg>',
+      '<svg viewBox="0 0 80 70" aria-hidden="true"><rect x="28" y="8" width="24" height="28" rx="4" fill="currentColor"/><path d="M12 68c0-16 12-26 28-26s28 10 28 26z" fill="currentColor"/></svg>',
+      '<svg viewBox="0 0 80 70" aria-hidden="true"><ellipse cx="40" cy="22" rx="10" ry="15" fill="currentColor"/><path d="M16 68c0-16 10-26 24-26s24 10 24 26z" fill="currentColor"/></svg>',
+      '<svg viewBox="0 0 80 70" aria-hidden="true"><path d="M40 6l15 28H25z" fill="currentColor"/><path d="M10 68c0-16 12-26 30-26s30 10 30 26z" fill="currentColor"/></svg>'
     ];
-
-    const LS = "rally-v2-prod";
-    let st = { id: "", stamps: {}, email: "", screen: "top", spot: null, pick: null, mode: "p", prize: "none", filter: "all", q: "", loggedIn: false, confirmId: null };
-    let others = [];
-
-    // ローカルデータの読み込み
-    try {
-      const s = JSON.parse(localStorage.getItem(LS));
-      if (s) {
-        if (s.id) st.id = s.id;
-        if (s.stamps) st.stamps = s.stamps;
-        st.email = s.email || "";
-        st.prize = s.prize || "none";
+    const SPOTS = [
+      {
+        id: 1, type: "single", q: "20世紀初頭、ピカソやジョルジュ・ブラックが描いた作品に見られる、複数の角度からの視点を合わせて描く手法を何というか。",
+        c: ["未来派", "シュルレアリスム", "キュービズム", "フォーヴィスム"], a: [2],
+        ex: "正解はキュービズム（立体派）です。対象を複数の視点から分解し、ひとつの画面に組み直す手法で、ピカソとブラックが始めました。\n未来派は動きや速度、シュルレアリスムは夢や無意識、フォーヴィスムは強い色彩が特徴です。", draft: true
+      },
+      {
+        id: 2, type: "multi", q: "造形の前にある銅像はどれでしょう。当てはまるものをすべて選んでください。",
+        c: ["A", "B", "C", "D"], a: [0], image: true,
+        ex: "正解はAです。\n（問題の画像、正解、解説は仮です。あとで差し替えます）", draft: true
+      },
+      {
+        id: 3, type: "all", q: "徹夜の連続、終わらない課題制作、度重なるダメ出しを乗り越えるために、美大生に最も不可欠な人間離れした要素とは？",
+        c: ["勇気", "元気", "やる気", "狂気"], a: [0, 1, 2, 3],
+        ex: "どれを選んでも正解です。\n最後にものを言うのは、やっぱり少しの狂気かもしれません。", draft: true
+      },
+      {
+        id: 4, type: "single", q: "東京造形大学生が無料で行けない場所はどこ？",
+        c: ["国立工芸館", "国立国際美術館", "国立映画アーカイブ", "国立劇場"], a: [3],
+        ex: "正解は国立劇場です。\n国立工芸館、国立国際美術館、国立映画アーカイブは国立美術館の施設で、東京造形大学生は無料で入れます。", draft: true
+      },
+      {
+        id: 5, type: "single", q: "東京造形大学の設立当初から現在まで継続している専攻・領域は、いくつでしょう。",
+        c: ["4つ", "6つ", "7つ", "9つ"], a: [2],
+        ex: "正解はC、7つです。\n続いている：絵画、彫刻、写真、室内建築、テキスタイルデザイン、インダストリアルデザイン、グラフィックデザイン。\nなくなった：ビジュアルデザイン、プロダクトデザイン、インテリアテキスタイル、コスチュームテキスタイル。", draft: true
       }
-    } catch (e) { }
-
-    // 新規ユーザーにはランダムなIDを発行
-    if (!st.id) {
-      st.id = "P-" + Math.floor(Math.random() * 10000).toString().padStart(4, "0");
-      saveLocal();
-    }
-
-    function saveLocal() {
-      try { localStorage.setItem(LS, JSON.stringify({ id: st.id, stamps: st.stamps, email: st.email, prize: st.prize })); } catch (e) { }
-    }
-
-    // データの保存（ローカル保存＋サーバーへ送信）
-    function save() {
-      saveLocal();
-      if (GAS_URL.startsWith("http")) {
-        fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'update_user', id: st.id, stamps: st.stamps, email: st.email, prize: st.prize })
-        }).catch(e => console.error("通信エラー", e));
-      }
-    }
-
-    // サーバーからデータを一括取得（運営用）
-    async function loadAdminData() {
-      if (!GAS_URL.startsWith("http")) {
-        alert("コード内の GAS_URL にサーバーのURLが設定されていません。");
-        return;
-      }
-      try {
-        const res = await fetch(GAS_URL);
-        const data = await res.json();
-        others = data.filter(x => x.id !== st.id); // 自分のデータを除外して一覧にセット
-        render();
-      } catch (e) {
-        console.error("読込エラー", e);
-        alert("データの取得に失敗しました。URLが正しいか確認してください。");
-      }
-    }
-
+    ];
+    const LS = "rally-proto-v3";
+    let st = { stamps: {}, pid: "P-0000", screen: "top", spot: null, pick: [], mode: "p", prize: "none", filter: "all", q: "", loggedIn: false, confirmId: null, email: "", sid: "", stu: "", mail1: "", mail2: "", agree: false, err: "" };
+    let others = [
+      { id: "P-0412", s: [1, 1, 1, 1, 1], prize: "done", at: "11:42", mail: "s2401@zokei.ac.jp", sid: "A0001" },
+      { id: "P-0388", s: [1, 1, 1, 1, 1], prize: "none", mail: "s2397@zokei.ac.jp", sid: "A0002" },
+      { id: "P-0451", s: [1, 1, 1, 0, 1], prize: "none" },
+      { id: "P-0299", s: [1, 0, 1, 0, 0], prize: "none" },
+      { id: "P-0467", s: [1, 1, 0, 0, 0], prize: "none" },
+      { id: "P-0475", s: [1, 0, 0, 0, 0], prize: "none" },
+      { id: "P-0502", s: [1, 1, 1, 1, 1], prize: "none" }
+    ];
+    try { const s = JSON.parse(localStorage.getItem(LS)); if (s && s.stamps) { st.stamps = s.stamps; st.prize = s.prize || "none"; st.email = s.email || ""; st.sid = s.sid || ""; } } catch (e) { }
+    function save() { try { localStorage.setItem(LS, JSON.stringify({ stamps: st.stamps, prize: st.prize, email: st.email, sid: st.sid })); } catch (e) { } }
     const count = () => Object.keys(st.stamps).length;
     const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const br = (s) => esc(s).replace(/\n/g, "<br>");
     const app = document.getElementById("app");
     function go(screen, extra) { Object.assign(st, { screen }, extra || {}); render(); window.scrollTo(0, 0); }
 
+    /* ---- 参加者側 ---- */
     function stampRow() {
-      return `<div class="stamps" aria-label="スタンプ ${count()}/5">` + SPOTS.map(s => `<div class="slot ${st.stamps[s.id] ? "got" : ""}">${st.stamps[s.id] ? "済" : s.id}</div>`).join("") + `</div>`;
+      return `<div class="stamps" aria-label="スタンプ ${count()}/5">` + SPOTS.map(s => `<div class="slot ${st.stamps[s.id] ? "got" : ""}">${st.stamps[s.id] ? s.id : "？"}</div>`).join("") + `</div>`;
     }
     function topView() {
-      return `<section class="hero"><div class="ring"></div><span class="tag">STAMP RALLY</span><h1>キャンパス謎解きラリー</h1><p>キャンパスに隠れた5つのスポットを探して、クイズに答えてスタンプを集めよう。</p></section>
-  <section class="card"><h2 style="font-size:17px">イベント概要</h2><dl class="info"><dt>参加者ID</dt><dd>${st.id}</dd><dt>開催場所</dt><dd>○○大学</dd><dt>遊び方</dt><dd>5つのスポットを自分で探し、クイズに答えるとスタンプがもらえます。</dd></dl></section>
-  <button class="btn" data-act="start">${count() > 0 ? "ラリーをつづける" : "スタート"}</button>`;
+      return `
+  <img class="poster" src="poster.jpg" width="920" height="1293" alt="挑戦状のポスター。11月23日（月）から27日（金）まで。10号館食堂がスタート。東京造形や美術に関する謎が構内に5つ掲示されている。謎を探し出して、謎を解け。先着1000名様にプレゼント、抽選で豪華景品あり。あなたにこの謎が解けるか。学生自治会。">
+  <button class="btn" data-act="start">${count() > 0 ? "挑戦をつづける" : "挑戦をはじめる"}</button>
+  <section class="card">
+    <dl class="info">
+      <dt>開催日</dt><dd>11月23日（月）〜27日（金）</dd>
+      <dt>開催場所</dt><dd>10号館食堂からスタート</dd>
+      <dt>遊び方</dt><dd>東京造形や美術に関する謎が、構内に5つ掲示されています。探し出してQRコードを読み取り、謎に答えてください。順番は自由です。正解でも不正解でも、答えればスタンプがもらえます。</dd>
+      <dt>景品</dt><dd>5つ集めた人の中から抽選です。景品はイベント終了後にお渡しします。</dd>
+    </dl>
+    <p class="small">スタンプの記録は、氏名なしで残ります。メールアドレスと学籍番号は、5つ集めて抽選に応募するときだけ入力します。</p>
+  </section>
+  <p class="footer">学生自治会</p>`;
     }
     function rallyView() {
       const n = count();
-      return `<section class="card"><div class="progress"><div><span class="small">あつめたスタンプ</span><div class="n">${n}<small> / 5</small></div></div><span class="chip ${n === 5 ? "ok" : "stamp"}">${n === 5 ? "コンプリート" : "あと" + (5 - n) + "か所"}</span></div>
-    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${n}"><i style="width:${n * 20}%"></i></div>${stampRow()}</section>
-  ${n === 5 ? `<button class="btn" data-act="complete">景品の抽選に進む</button>` : ""}
-  <section style="display:flex;flex-direction:column;gap:10px"><h2 style="font-size:16px">スポットのヒント</h2>
+      return `
+  <section class="card">
+    <div class="progress"><div><span class="small">あつめたスタンプ</span><div class="n">${n}<small> / 5</small></div></div>
+      <span class="chip ${n === 5 ? "ok" : "red"}">${n === 5 ? "コンプリート" : "あと" + (5 - n) + "つ"}</span></div>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${n}"><i style="width:${n * 20}%"></i></div>
+    ${stampRow()}
+  </section>
+  ${n === 5 ? `<button class="btn" data-act="complete">抽選に進む</button>` : `<p class="notice">構内に掲示された謎のQRコードを探して、スマホのカメラで読み取ってください。</p>`}
+  <section style="display:flex;flex-direction:column;gap:8px">
     ${SPOTS.map(s => {
-        const d = !!st.stamps[s.id]; return `<div class="spot ${d ? "done" : ""}"><div class="no">${d ? "済" : s.id}</div><div class="t"><b>${s.name}</b><span>${s.hint}</span></div>${d ? `<span class="chip ok">回答済み</span>` : `<button class="go" data-act="arrive" data-id="${s.id}" type="button">着いた</button>`}</div>`;
-      }).join("")}</section>
-  <button class="btn ghost" data-act="top" style="border-color:var(--line);color:var(--muted)">トップへ</button>`;
+        const d = !!st.stamps[s.id]; return `
+      <div class="spot ${d ? "done" : ""}">
+        <div class="no">${d ? s.id : "？"}</div>
+        <div><b>${d ? "謎 " + s.id : "まだ見つけていない謎"}</b><span class="s">${d ? "回答済み" : "QRコードを読み取ると開きます"}</span></div>
+        ${d ? `<span class="chip ok">獲得</span>` : `<span class="chip">未発見</span>`}
+      </div>`;
+      }).join("")}
+  </section>
+  <section class="sim"><span class="small">試作用：QRコードの読み取りをまねします。本番では、カメラで読み取ると直接クイズが開きます。</span>
+    <div class="row">${SPOTS.map(s => `<button type="button" data-act="arrive" data-id="${s.id}">QR ${s.id}</button>`).join("")}</div></section>
+  <button class="btn ghost" data-act="top">トップへ</button>`;
     }
     function quizView() {
       const s = SPOTS.find(x => x.id === st.spot);
-      return `<section class="card"><span class="chip stamp" style="align-self:flex-start">${s.name}</span><p class="q">${esc(s.q)}</p>
-    <div class="choices">${s.c.map((t, i) => `<button class="choice" type="button" data-act="pick" data-i="${i}" aria-pressed="${st.pick === i}"><span class="k">${"ABC"[i]}</span><span>${esc(t)}</span></button>`).join("")}</div></section>
-  <button class="btn" data-act="answer" ${st.pick === null ? "disabled" : ""}>回答する</button>
-  <button class="btn ghost" data-act="rally" style="border-color:var(--line);color:var(--muted)">もどる</button>`;
+      const multi = s.type === "multi";
+      const choices = s.image
+        ? `<div class="imgph">${BUST[0]}<span>問題の画像（仮）</span></div>
+       <div class="imggrid">${s.c.map((t, i) => `<button class="choice" type="button" data-act="pick" data-i="${i}" aria-pressed="${st.pick.includes(i)}"><span class="imgph">${BUST[i]}</span><span class="lab"><span class="k">${t}</span><span>仮の画像${t}</span></span></button>`).join("")}</div>`
+        : `<div class="choices">${s.c.map((t, i) => `<button class="choice" type="button" data-act="pick" data-i="${i}" aria-pressed="${st.pick.includes(i)}"><span class="k">${"ABCD"[i]}</span><span>${esc(t)}</span></button>`).join("")}</div>`;
+      return `
+  <section class="paper">
+    <span class="qno">QUESTION ${s.id}</span>
+    <p class="q">${esc(s.q)}</p>
+    ${multi ? `<span class="chip red" style="align-self:flex-start">複数選べます</span>` : ""}
+    ${choices}
+    <p class="small">正解でも不正解でも、回答するとスタンプがもらえます。回答のやり直しはできません。</p>
+  </section>
+  <button class="btn" data-act="answer" ${st.pick.length === 0 ? "disabled" : ""}>回答する</button>
+  <button class="btn ghost" data-act="rally">まだ答えない</button>`;
     }
     function resultView() {
-      const s = SPOTS.find(x => x.id === st.spot); const ok = st.stamps[s.id] && st.stamps[s.id].ok; const n = count();
-      return `<section class="card result"><div class="verdict ${ok ? "ok" : "ng"}">${ok ? "正解！" : "おしい！"}</div>
-    <div class="big-stamp"><div><b>${s.id}</b><span>STAMP</span></div></div><p><b>${s.name}のスタンプを獲得しました</b></p><div class="expl">${esc(s.ex)}</div><div style="width:100%">${stampRow()}</div></section>
-  <button class="btn" data-act="${n === 5 ? "complete" : "rally"}">${n === 5 ? "景品の抽選に進む" : "ラリーにもどる"}</button>`;
+      const s = SPOTS.find(x => x.id === st.spot);
+      const rec = st.stamps[s.id];
+      const ok = rec && rec.ok;
+      const n = count();
+      return `
+  <section class="card result">
+    <div class="verdict ${ok ? "ok" : "ng"}">${ok ? "正解" : "不正解"}</div>
+    <div class="big-stamp"><div><b>${s.id}</b><span>STAMP</span></div></div>
+    <p><b>謎${s.id}のスタンプを獲得しました</b></p>
+    <div class="expl"><h3>解説</h3>${br(s.ex)}${s.draft ? `<div class="draft">※文面は仮です</div>` : ""}</div>
+    <div style="width:100%">${stampRow()}</div>
+    <p class="small">${n} / 5</p>
+  </section>
+  <button class="btn" data-act="${n === 5 ? "complete" : "rally"}">${n === 5 ? "抽選に進む" : "つづける"}</button>`;
     }
     function completeView() {
-      return `<section class="hero"><div class="ring"></div><span class="tag">COMPLETE</span><h1>5つ全部あつめました！</h1><p>おめでとうございます。景品の抽選に参加できます。</p></section>
-  <section class="card"><h2 style="font-size:17px">景品の抽選について</h2>
-    ${st.email ? `<div class="notice">登録しました：<b>${esc(st.email)}</b></div><button class="btn ghost" data-act="editmail">アドレスを変更する</button>` : `
-    <form id="mailform" novalidate><label class="f" for="mail">大学のメールアドレス<input id="mail" type="email" inputmode="email" autocomplete="email"></label><p class="err" id="mailerr" role="alert"></p><button class="btn" type="submit">登録する</button></form>`}
-  </section><button class="btn ghost" data-act="rally" style="border-color:var(--line);color:var(--muted)">もどる</button>`;
+      return `
+  <section class="band"><span class="tag">COMPLETE</span><h1>全ての謎を解いた</h1><p>5つのスタンプがそろいました。</p></section>
+  <section class="card">
+    <h2>抽選への応募</h2>
+    <p>景品は抽選で決まります。応募フォームに、大学のメールアドレスと学籍番号を入力してください。抽選の結果は、後日、専用のページで確認できます。</p>
+    ${st.email ? `<div class="notice">応募済みです：<b>${esc(st.email)}</b></div>` : ""}
+    <button class="btn" type="button" data-act="apply">${st.email ? "応募内容を見る" : "応募フォームに進む"}</button>
+    <p class="small">景品はイベント終了後にお渡しします。</p>
+  </section>
+  <button class="btn ghost" data-act="rally">スタンプ画面にもどる</button>`;
+    }
+    function applyView() {
+      return `
+  <section class="band"><span class="tag">ENTRY</span><h1>抽選に応募する</h1></section>
+  <section class="card">
+    <form id="applyform" novalidate>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <label class="f" for="pid">参加者番号<input id="pid" type="text" value="${esc(st.pid)}" readonly></label>
+        <label class="f" for="stu">学籍番号（必須）<input aria-required="true" id="stu" type="text" inputmode="text" autocomplete="off" placeholder="学籍番号" value="${esc(st.stu)}"></label>
+        <label class="f" for="mail1">大学のメールアドレス（必須）<input aria-required="true" id="mail1" type="email" inputmode="email" autocomplete="email" placeholder="s0000@zokei.ac.jp" value="${esc(st.mail1)}"></label>
+        <label class="f" for="mail2">メールアドレス（確認のため、もう一度・必須）<input aria-required="true" id="mail2" type="email" inputmode="email" autocomplete="off" value="${esc(st.mail2)}"></label>
+        <label class="agree" for="agree"><input id="agree" type="checkbox" ${st.agree ? "checked" : ""}><span>メールアドレスと学籍番号は、抽選と景品のご案内・お渡しにだけ使うことに同意します。</span></label>
+        <p class="err" role="alert">${esc(st.err)}</p>
+        <button class="btn" type="submit">確認へ進む</button>
+      </div>
+    </form>
+    <p class="small">応募は1人1回です。参加者番号は、5つのスタンプの記録と結びついています。</p>
+  </section>
+  <button class="btn ghost" data-act="complete">もどる</button>`;
+    }
+    function confirmView() {
+      return `
+  <section class="band"><span class="tag">CONFIRM</span><h1>内容の確認</h1></section>
+  <section class="card">
+    <dl class="info">
+      <dt>参加者番号</dt><dd>${esc(st.pid)}</dd>
+      <dt>学籍番号</dt><dd>${esc(st.stu)}</dd>
+      <dt>メール</dt><dd style="word-break:break-all">${esc(st.mail1)}</dd>
+    </dl>
+    <p class="small">応募したあとは、内容を変えられません。アドレスに間違いがないか確かめてください。</p>
+    <button class="btn" type="button" data-act="submitapply">この内容で応募する</button>
+    <button class="btn ghost" type="button" data-act="apply">直す</button>
+  </section>`;
+    }
+    function doneView() {
+      return `
+  <section class="band"><span class="tag">THANK YOU</span><h1>応募を受け付けました</h1></section>
+  <section class="card">
+    <dl class="info">
+      <dt>参加者番号</dt><dd>${esc(st.pid)}</dd>
+      <dt>学籍番号</dt><dd>${esc(st.sid)}</dd>
+      <dt>メール</dt><dd style="word-break:break-all">${esc(st.email)}</dd>
+    </dl>
+    <p>抽選は運営が行います。結果は、後日、専用のページで確認できます。確認するときは、このメールアドレスを入力してください。景品はイベント終了後にお渡しします。</p>
+    <p class="small">結果ページの公開日は、あらためてお知らせします。</p>
+  </section>
+  <button class="btn ghost" data-act="rally">スタンプ画面にもどる</button>
+  <p class="footer">学生自治会</p>`;
     }
 
+    /* ---- 運営側 ---- */
     function adminRows() {
-      const you = { id: st.id + " (あなた)", s: SPOTS.map(x => st.stamps[x.id] ? 1 : 0), mail: st.email, prize: st.prize, you: true };
-      let rows = [you, ...others];
-      rows = rows.map(r => ({ ...r, total: r.s.reduce((a, b) => a + b, 0) }));
+      const you = { id: st.pid + "（試作中のあなた）", s: SPOTS.map(x => st.stamps[x.id] ? 1 : 0), prize: st.prize, mail: st.email, sid: st.sid, you: true };
+      let rows = [you, ...others].map(r => ({ ...r, total: r.s.reduce((a, b) => a + b, 0) }));
       if (st.filter === "done") rows = rows.filter(r => r.total === 5);
       if (st.filter === "unex") rows = rows.filter(r => r.total === 5 && r.prize !== "done");
       if (st.q) rows = rows.filter(r => r.id.toLowerCase().includes(st.q.toLowerCase()));
       return rows;
     }
     function adminView() {
-      if (!st.loggedIn) return `<section class="card login"><h2 style="font-size:18px">運営ログイン</h2>
-    <form id="loginform"><label class="f" for="adm">運営用ID<input id="adm" type="text"></label><button class="btn" type="submit" style="margin-top:14px">ログイン</button></form></section>`;
-
-      const all = [{ id: st.id, s: SPOTS.map(x => st.stamps[x.id] ? 1 : 0), prize: st.prize }, ...others].map(r => ({ ...r, t: r.s.reduce((a, b) => a + b, 0) }));
+      if (!st.loggedIn) return `
+  <section class="card login"><h2>運営ログイン</h2>
+    <form id="loginform">
+      <label class="f" for="pw">合言葉<input id="pw" type="password" autocomplete="off" placeholder="運営に伝えられた合言葉"></label>
+      <button class="btn" type="submit" style="margin-top:6px">ログイン</button>
+    </form>
+    <p class="small">試作のため、何も入力せずに入れます。本番では合言葉を知っている運営だけが入れます。</p>
+  </section>`;
+      const all = [{ s: SPOTS.map(x => st.stamps[x.id] ? 1 : 0), prize: st.prize }, ...others].map(r => ({ ...r, t: r.s.reduce((a, b) => a + b, 0) }));
       const total = all.length, comp = all.filter(r => r.t === 5).length, done = all.filter(r => r.t === 5 && r.prize === "done").length;
       const rows = adminRows();
-      return `<h1 style="font-size:20px">運営ダッシュボード</h1>
-  <div class="stats"><div class="stat"><b>${total}</b><span>参加者</span></div><div class="stat"><b>${comp}</b><span>5か所達成</span></div><div class="stat"><b>${done}</b><span>景品 交換済</span></div><div class="stat"><b>${comp - done}</b><span>未交換</span></div></div>
-  <div class="tools"><input type="search" id="q" placeholder="IDで探す" value="${esc(st.q)}">
-    <div class="seg"><button type="button" data-f="all" aria-pressed="${st.filter === "all"}">全員</button><button type="button" data-f="done" aria-pressed="${st.filter === "done"}">達成</button><button type="button" data-f="unex" aria-pressed="${st.filter === "unex"}">未交換</button></div>
-    <button class="xbtn" type="button" data-act="reload" style="background:var(--ok);color:#fff">データを更新</button>
-    <button class="xbtn" type="button" data-act="csv">CSV出力</button>
+      return `
+  <h1 style="font-size:20px">運営ダッシュボード</h1>
+  <div class="stats">
+    <div class="stat"><b>${total}</b><span>参加者</span></div>
+    <div class="stat"><b>${comp}</b><span>5つ達成</span></div>
+    <div class="stat"><b>${done}</b><span>景品 渡し済み</span></div>
+    <div class="stat"><b>${comp - done}</b><span>景品 未交換</span></div>
+  </div>
+  <div class="tools">
+    <input type="search" id="q" placeholder="参加者番号で探す" value="${esc(st.q)}" aria-label="参加者番号で探す">
+    <div class="seg" role="group" aria-label="絞り込み">
+      <button type="button" data-f="all" aria-pressed="${st.filter === "all"}">全員</button>
+      <button type="button" data-f="done" aria-pressed="${st.filter === "done"}">5つ達成</button>
+      <button type="button" data-f="unex" aria-pressed="${st.filter === "unex"}">未交換のみ</button>
+    </div>
+    <button class="xbtn" type="button" data-act="csv">CSVを表示</button>
   </div>
   <div class="tablebox"><table>
-    <thead><tr><th>参加者ID</th>${SPOTS.map(s => `<th>S${s.id}</th>`).join("")}<th>合計</th><th>メール</th><th>景品</th><th></th></tr></thead>
-    <tbody>${rows.length ? rows.map((r) => {
+    <thead><tr><th>参加者番号</th>${SPOTS.map(s => `<th>謎${s.id}</th>`).join("")}<th>合計</th><th>応募</th><th>学籍番号</th><th>景品</th><th></th></tr></thead>
+    <tbody>${rows.length ? rows.map(r => {
         const comp = r.total === 5, ex = r.prize === "done";
         return `<tr class="${r.you ? "you" : ""}">
         <td class="id">${esc(r.id)}</td>
-        ${r.s.map(v => `<td><span class="dot ${v ? "on" : ""}"></span></td>`).join("")}
-        <td class="num">${r.total}/5</td><td>${r.mail ? esc(r.mail) : '<span class="small">—</span>'}</td>
-        <td>${!comp ? '<span class="chip">対象外</span>' : ex ? `<span class="chip ok">交換済${r.at ? " " + r.at : ""}</span>` : '<span class="chip warn">未交換</span>'}</td>
+        ${r.s.map(v => `<td><span class="dot ${v ? "on" : ""}" aria-label="${v ? "獲得" : "未獲得"}"></span></td>`).join("")}
+        <td class="num">${r.total}/5</td>
+        <td>${!comp ? '<span class="chip">—</span>' : r.mail ? '<span class="chip ok">応募済み</span>' : '<span class="chip warn">未応募</span>'}</td>
+        <td class="id">${r.sid ? esc(r.sid) : '<span class="small">—</span>'}</td>
+        <td>${!comp ? '<span class="chip">対象外</span>' : ex ? `<span class="chip ok">渡し済み${r.at ? " " + r.at : ""}</span>` : '<span class="chip warn">未交換</span>'}</td>
         <td>${comp ? (ex ? `<button class="xbtn" disabled>渡し済み</button>` : (st.confirmId === r.id ? `<button class="xbtn confirm" data-act="xchg" data-id="${esc(r.id)}">本当に渡した</button>` : `<button class="xbtn" data-act="xask" data-id="${esc(r.id)}">交換済みにする</button>`)) : ""}</td>
       </tr>`;
-      }).join("") : `<tr><td colspan="10" class="small">該当なし</td></tr>`}</tbody>
-  </table></div><div id="csvbox"></div>`;
+      }).join("") : `<tr><td colspan="10" class="small">該当する参加者がいません</td></tr>`}</tbody>
+  </table></div>
+  <p class="small">「交換済みにする」は確認を挟んで、1人につき1回だけ押せます。渡し済みの人には再度押せないため、二重配布を防げます。応募の状況は「応募」の列で分かります。応募したメールアドレスと学籍番号はCSVに入ります。一番上の行は、参加者の画面で操作したあなたの記録です。</p>
+  <div id="csvbox"></div>`;
+    }
+    function csvText() {
+      const rows = adminRows();
+      const head = ["participant_id", ...SPOTS.map(s => "spot" + s.id), "total", "email", "student_id", "prize_status"];
+      return [head, ...rows.map(r => [r.id.replace("（試作中のあなた）", ""), ...r.s, r.total, r.mail || "", r.sid || "", r.total === 5 ? (r.prize === "done" ? "渡し済み" : "未交換") : "対象外"])].map(r => r.join(",")).join("\n");
     }
 
+    /* ---- 描画とイベント ---- */
     function render() {
-      const v = st.mode === "a" ? adminView() : ({ top: topView, rally: rallyView, quiz: quizView, result: resultView, complete: completeView }[st.screen])();
-      document.getElementById("app").className = "wrap" + (st.mode === "a" && st.loggedIn ? " wide" : "");
+      const v = st.mode === "a" ? adminView() : ({ top: topView, rally: rallyView, quiz: quizView, result: resultView, complete: completeView, apply: applyView, confirm: confirmView, done: doneView }[st.screen])();
+      app.className = "wrap" + (st.mode === "a" && st.loggedIn ? " wide" : "");
       app.innerHTML = v;
       document.getElementById("tab-p").setAttribute("aria-pressed", st.mode === "p");
       document.getElementById("tab-a").setAttribute("aria-pressed", st.mode === "a");
-      const mf = document.getElementById("mailform");
-      if (mf) mf.addEventListener("submit", e => {
+      const af = document.getElementById("applyform");
+      if (af) af.addEventListener("submit", e => {
         e.preventDefault();
-        const v = document.getElementById("mail").value.trim();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { document.getElementById("mailerr").textContent = "正しいメールアドレスを入力してください。"; return; }
-        st.email = v; save(); render();
+        st.stu = document.getElementById("stu").value.trim().normalize("NFKC");
+        st.mail1 = document.getElementById("mail1").value.trim();
+        st.mail2 = document.getElementById("mail2").value.trim();
+        st.agree = document.getElementById("agree").checked;
+        if (!st.stu) st.err = "学籍番号を入力してください。";
+        else if (!/^[^\s@]+@zokei\.ac\.jp$/i.test(st.mail1)) st.err = "大学のメールアドレス（@zokei.ac.jp）を入力してください。";
+        else if (st.mail1.toLowerCase() !== st.mail2.toLowerCase()) st.err = "確認用のアドレスが一致しません。もう一度入力してください。";
+        else if (!st.agree) st.err = "メールアドレスの使いみちへの同意にチェックを入れてください。";
+        else { st.err = ""; return go("confirm"); }
+        render();
       });
       const lf = document.getElementById("loginform");
-      if (lf) lf.addEventListener("submit", e => { e.preventDefault(); st.loggedIn = true; render(); loadAdminData(); });
+      if (lf) lf.addEventListener("submit", e => { e.preventDefault(); st.loggedIn = true; render(); });
       const q = document.getElementById("q");
       if (q) q.addEventListener("input", e => { st.q = e.target.value; const pos = e.target.selectionStart; render(); const n = document.getElementById("q"); n.focus(); n.setSelectionRange(pos, pos); });
     }
-
     document.addEventListener("click", e => {
       const t = e.target.closest("button"); if (!t) return;
       if (t.id === "tab-p") { st.mode = "p"; return render(); }
       if (t.id === "tab-a") { st.mode = "a"; return render(); }
       if (t.dataset.f) { st.filter = t.dataset.f; return render(); }
       const a = t.dataset.act; if (!a) return;
-
       if (a === "start" || a === "rally") return go("rally");
       if (a === "top") return go("top");
       if (a === "complete") return go("complete");
-      if (a === "editmail") { st.email = ""; save(); return render(); }
-      if (a === "arrive") return go("quiz", { spot: +t.dataset.id, pick: null });
-      if (a === "pick") { st.pick = +t.dataset.i; return render(); }
+      if (a === "apply") return st.email ? go("done") : go("apply", { err: "" });
+      if (a === "submitapply") { if (!st.email) { st.email = st.mail1.trim(); st.sid = st.stu.trim(); save(); } return go("done"); }
+      if (a === "copyid") {
+        const m = document.getElementById("copymsg");
+        try { navigator.clipboard.writeText(st.pid).then(() => m.textContent = "コピーしました。", () => m.textContent = "コピーできませんでした。番号を長押しして選んでください。"); }
+        catch (err) { m.textContent = "コピーできませんでした。番号を長押しして選んでください。"; }
+        return;
+      }
+      if (a === "arrive") {
+        const id = +t.dataset.id;
+        return st.stamps[id] ? go("result", { spot: id }) : go("quiz", { spot: id, pick: [] });   // 回答済みなら結果を再表示（再回答は不可）
+      }
+      if (a === "pick") {
+        const i = +t.dataset.i, s = SPOTS.find(x => x.id === st.spot);
+        if (s.type === "multi") st.pick = st.pick.includes(i) ? st.pick.filter(x => x !== i) : [...st.pick, i];
+        else st.pick = [i];
+        return render();
+      }
       if (a === "answer") {
         const s = SPOTS.find(x => x.id === st.spot);
-        if (!st.stamps[s.id]) { st.stamps[s.id] = { ok: st.pick === s.a }; save(); }
-        return go("result");
+        if (!st.stamps[s.id]) {   // 同じスポットは1回だけ登録
+          let ok;
+          if (s.type === "all") ok = true;
+          else if (s.type === "multi") ok = st.pick.length === s.a.length && s.a.every(x => st.pick.includes(x));
+          else ok = st.pick[0] === s.a[0];
+          st.stamps[s.id] = { ok };
+        }
+        save(); return go("result");
       }
-      if (a === "reload") { loadAdminData(); return; }
       if (a === "xask") { st.confirmId = t.dataset.id; return render(); }
       if (a === "xchg") {
         const id = t.dataset.id; const now = new Date(); const hm = now.getHours() + ":" + String(now.getMinutes()).padStart(2, "0");
-        let targetId = id;
-        if (id.includes("(あなた)")) {
-          targetId = st.id;
-          if (st.prize !== "done") { st.prize = "done"; saveLocal(); }
-        } else {
-          const r = others.find(x => x.id === id); if (r && r.prize !== "done") { r.prize = "done"; r.at = hm; }
-        }
-        st.confirmId = null; render();
-        if (GAS_URL.startsWith("http")) {
-          fetch(GAS_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'exchange', id: targetId, at: hm }) }).catch(e => console.error(e));
-        }
-        return;
+        if (id.startsWith("P-0000")) { if (st.prize !== "done") { st.prize = "done"; save(); } }
+        else { const r = others.find(x => x.id === id); if (r && r.prize !== "done") { r.prize = "done"; r.at = hm; } }
+        st.confirmId = null; return render();
       }
       if (a === "csv") {
-        const rows = adminRows();
-        const head = ["participant_id", ...SPOTS.map(s => "spot" + s.id), "total", "email", "prize_status"];
-        const csv = [head, ...rows.map(r => [r.id.replace(" (あなた)", ""), ...r.s, r.total, r.mail || "", r.total === 5 ? (r.prize === "done" ? "交換済み" : "未交換") : "対象外"])].map(r => r.join(",")).join("\n");
-        document.getElementById("csvbox").innerHTML = `<div class="card"><textarea id="csvta" readonly></textarea><button class="xbtn" type="button" data-act="copycsv">コピーする</button></div>`;
-        document.getElementById("csvta").value = csv; return;
+        document.getElementById("csvbox").innerHTML = `<div class="card"><h2 style="font-size:15px">CSV（表示中の絞り込み結果）</h2><textarea id="csvta" readonly aria-label="CSV"></textarea><button class="xbtn" type="button" data-act="copycsv" style="align-self:flex-start">コピーする</button><p class="small" id="csvmsg"></p></div>`;
+        document.getElementById("csvta").value = csvText(); return;
       }
-      if (a === "copycsv") { navigator.clipboard.writeText(document.getElementById("csvta").value); alert("コピーしました"); }
+      if (a === "copycsv") {
+        const ta = document.getElementById("csvta"), m = document.getElementById("csvmsg");
+        const fb = () => { ta.select(); m.textContent = "選択しました。コピーしてください。"; };
+        try { navigator.clipboard.writeText(ta.value).then(() => m.textContent = "コピーしました。", fb); } catch (err) { fb(); }
+      }
     });
     render();
   </script>
+
 </body>
 
 </html>
