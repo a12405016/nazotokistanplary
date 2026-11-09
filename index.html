@@ -1,10 +1,26 @@
 <!doctype html>
-<html>
+<html lang="ja">
 
 <head>
-  <meta charset=utf8>
-  <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="学生自治会">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>挑戦状 ― あなたにこの謎が解けるか｜東京造形大学 学生自治会</title>
+  <meta name="description" content="11月23日（月）〜27日（金）、東京造形大学の構内に5つの謎が隠されている。10号館食堂からスタート。全問答えた人には参加賞、抽選で豪華景品あり。主催：学生自治会">
+  <meta name="theme-color" content="#0a0a0b">
+
+  <!-- ===== SNS で共有されたときの表示（OGP）===== -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="東京造形大学 学生自治会">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:title" content="挑戦状 ― あなたにこの謎が解けるか">
+  <meta property="og:description" content="11/23（月）〜27（金）、構内に隠された5つの謎を解け。10号館食堂からスタート。全問答えた人には参加賞、抽選で豪華景品も。">
+  <meta property="og:url" content="https://a12405016.github.io/nazotokistanplary/">
+  <meta property="og:image" content="https://a12405016.github.io/nazotokistanplary/ogp.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="挑戦状。11月23日から27日まで、東京造形大学の構内で謎解き。学生自治会。">
+  <meta name="twitter:card" content="summary_large_image">
+
   <style>
     :root {
       color-scheme: light;
@@ -36,7 +52,6 @@
 </head>
 
 <body>
-  <title>挑戦状</title>
   <meta name="claude:viewport-fit-sides" content="cover">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -912,28 +927,16 @@
     }
   </style>
 
-  <div class="wrap" id="chrome">
-    <p class="proto">これは試作です。保存はこの端末のブラウザの中だけで、サーバーにはつながっていません。</p>
-    <button id="reset" class="proto-btn" type="button">最初からやり直す（試作用）</button>
-    <button class="proto-btn" type="button" data-act="adopen">運営の画面を開く（試作用）</button>
-  </div>
-
-  <div class="wrap" id="app" style="margin-top:16px"></div>
+  <div class="wrap" id="app"></div>
 
   <script>
-    /* ---- アンケート（選択肢は仮） ---- */
+    /* ===== Apps Script のウェブアプリURL（デプロイしたら …/exec をここに貼る） ===== */
+    const API = "https://script.google.com/macros/s/ここにデプロイIDを貼る/exec";
+
+    /* ---- アンケート（選択肢は仮。数を変えたら Code.gs の SURVEY_N も合わせる） ---- */
     const SURVEY = { q: "もしもA賞が当たったら何が欲しいですか？", c: ["お米（仮）", "お米（仮）", "お米（仮）", "お米（仮）"] };
 
-    /* ---- 各謎の場所。HINTS[0]は謎1の場所（スタート地点の10号館食堂で、ヒントは不要） ---- */
-    const HINTS = [
-      "10号館食堂です。",
-      "丸い建物のすぐ近く",
-      "デザイン棟の階段",
-      "バス停から近い円柱",
-      "一番最初QRコードがあった建物の地下　営業中！"
-    ];
-
-    /* ---- クイズ（本番では正解と解説はサーバー側だけに置く） ---- */
+    /* ---- クイズ（問題文と選択肢だけ。正解・解説・場所のヒントはサーバー側にある） ---- */
     const BUST = [
       '<svg viewBox="0 0 80 70" aria-hidden="true"><circle cx="40" cy="22" r="13" fill="currentColor"/><path d="M12 68c0-16 12-26 28-26s28 10 28 26z" fill="currentColor"/></svg>',
       '<svg viewBox="0 0 80 70" aria-hidden="true"><rect x="28" y="8" width="24" height="28" rx="4" fill="currentColor"/><path d="M12 68c0-16 12-26 28-26s28 10 28 26z" fill="currentColor"/></svg>',
@@ -941,47 +944,60 @@
       '<svg viewBox="0 0 80 70" aria-hidden="true"><path d="M40 6l15 28H25z" fill="currentColor"/><path d="M10 68c0-16 12-26 30-26s30 10 30 26z" fill="currentColor"/></svg>'
     ];
     const SPOTS = [
-      {
-        id: 1, type: "single", q: "20世紀初頭、ピカソやジョルジュ・ブラックが描いた作品に見られる、複数の角度からの視点を合わせて描く手法を何というか。",
-        c: ["未来派", "シュルレアリスム", "キュービズム", "フォーヴィスム"], a: [2],
-        ex: "正解はキュービズム（立体派）です。対象を複数の視点から分解し、ひとつの画面に組み直す手法で、ピカソとブラックが始めました。\n未来派は動きや速度、シュルレアリスムは夢や無意識、フォーヴィスムは強い色彩が特徴です。", draft: true
-      },
-      {
-        id: 2, type: "multi", q: "造形の前にある銅像はどれでしょう。当てはまるものをすべて選んでください。",
-        c: ["A", "B", "C", "D"], a: [0], image: true,
-        ex: "正解はAです。\n（問題の画像、正解、解説は仮です。あとで差し替えます）", draft: true
-      },
-      {
-        id: 3, type: "single", q: "ドイツの美術・建築学校「バウハウス」が創立されたのは何年？",
-        c: ["1909年", "1919年", "1929年", "1939年"], a: [1],
-        ex: "正解はB、1919年です。\nヴァルター・グロピウスが、ドイツのヴァイマルで創立しました。工芸、デザイン、建築を結びつける教育で知られ、1933年に閉校しています。", draft: true
-      },
-      {
-        id: 4, type: "single", q: "東京造形大学生が無料で行けない場所はどこ？",
-        c: ["国立工芸館", "国立国際美術館", "国立映画アーカイブ", "国立劇場"], a: [3],
-        ex: "正解は国立劇場です。\n国立工芸館、国立国際美術館、国立映画アーカイブは国立美術館の施設で、東京造形大学生は無料で入れます。", draft: true
-      },
-      {
-        id: 5, type: "single", q: "東京造形大学の設立当初から現在まで継続している専攻・領域は、いくつでしょう。",
-        c: ["4つ", "6つ", "7つ", "9つ"], a: [2],
-        ex: "正解はC、7つです。\n続いている：絵画、彫刻、写真、室内建築、テキスタイルデザイン、インダストリアルデザイン、グラフィックデザイン。\nなくなった：ビジュアルデザイン、プロダクトデザイン、インテリアテキスタイル、コスチュームテキスタイル。", draft: true
-      }
+      { id: 1, type: "single", q: "20世紀初頭、ピカソやジョルジュ・ブラックが描いた作品に見られる、複数の角度からの視点を合わせて描く手法を何というか。", c: ["未来派", "シュルレアリスム", "キュービズム", "フォーヴィスム"] },
+      { id: 2, type: "multi", q: "造形の前にある銅像はどれでしょう。当てはまるものをすべて選んでください。", c: ["A", "B", "C", "D"], image: true },
+      { id: 3, type: "single", q: "ドイツの美術・建築学校「バウハウス」が創立されたのは何年？", c: ["1909年", "1919年", "1929年", "1939年"] },
+      { id: 4, type: "single", q: "東京造形大学生が無料で行けない場所はどこ？", c: ["国立工芸館", "国立国際美術館", "国立映画アーカイブ", "国立劇場"] },
+      { id: 5, type: "single", q: "東京造形大学の設立当初から現在まで継続している専攻・領域は、いくつでしょう。", c: ["4つ", "6つ", "7つ", "9つ"] }
     ];
-    const LS = "rally-proto-v5";
-    let st = { stamps: {}, screen: "top", spot: null, pick: [], sid: "", stu: "", agree: false, err: "", from: "rally", sv: null, svpick: null };
-    try { const s = JSON.parse(localStorage.getItem(LS)); if (s && s.stamps) { st.stamps = s.stamps; st.sid = s.sid || ""; st.sv = (typeof s.sv === "number") ? s.sv : null; st.prize = s.prize || ""; st.prizeAt = s.at || ""; } } catch (e) { }
-    st.screen = !st.sid ? "apply" : st.sv === null ? "survey" : "top";   // 最初に学籍番号を必ず入力してから、アンケートに進む
-    function save() { try { localStorage.setItem(LS, JSON.stringify({ stamps: st.stamps, sid: st.sid, sv: st.sv, prize: st.prize || "", at: st.prizeAt || "" })); } catch (e) { } }
+
+    /* ---- サーバーとのやりとり ---- */
+    const ERR = {
+      network: "通信できませんでした。電波のよい場所で、もう一度押してください。",
+      busy: "混み合っています。少し待ってから、もう一度押してください。",
+      invalid_sid: "学籍番号は、数字8桁で入力してください。",
+      not_found: "この学籍番号の記録が見つかりませんでした。もう一度入力してください。",
+      locked: "謎は1から順番に解きます。",
+      bad_password: "合言葉が違います。",
+      admin_locked: "合言葉のまちがいが続いたので、10分ほどログインを止めています。",
+      before: "回答できるのは、11月23日（月）からです。",
+      after: "イベントは終了しました。ご参加ありがとうございました。",
+      full: "申し訳ありません。参加の受付人数に達しました。",
+      not_complete: "この人は、まだ5問答えていません。",
+      server: "サーバーでエラーが起きました。少し待ってから、もう一度お試しください。"
+    };
+    async function api(action, data) {
+      let res;
+      try {
+        // text/plain で送ると、Apps Script でも事前確認（CORS preflight）なしで届く
+        const r = await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...(data || {}) }) });
+        res = await r.json();
+      } catch (e) { throw Object.assign(new Error("network"), { code: "network" }); }
+      if (!res.ok) throw Object.assign(new Error(res.error), { code: res.error, res });
+      return res;
+    }
+    const errMsg = (e) => ERR[e && e.code] || ERR.server;
+
+    /* ---- この端末に残すのは学籍番号だけ。スタンプはサーバーから読み込む ---- */
+    const LS = "rally-v6";
+    let st = { stamps: {}, hint: "", screen: "loading", spot: null, pick: [], sid: "", stu: "", agree: false, err: "", msg: "", busy: false, from: "rally", sv: null, svpick: null };
+    try { const s = JSON.parse(localStorage.getItem(LS)); if (s && s.sid) st.sid = s.sid; } catch (e) { }
+    function save() { try { localStorage.setItem(LS, JSON.stringify({ sid: st.sid })); } catch (e) { } }
+    function applyState(r) { st.sid = r.sid; st.sv = r.sv; st.stamps = r.stamps || {}; st.hint = r.hint || ""; st.prize = r.prize; st.prizeAt = r.at; save(); }
+    function forget() { st.sid = ""; st.sv = null; st.stamps = {}; st.hint = ""; try { localStorage.removeItem(LS); } catch (e) { } }
+
     const count = () => Object.keys(st.stamps).length;
     const hintTitle = (i) => i === 0 ? "謎1の場所" : "謎" + (i + 1) + "の場所のヒント";
     const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     const br = (s) => esc(s).replace(/\n/g, "<br>");
     const app = document.getElementById("app");
-    function go(screen, extra) { Object.assign(st, { screen }, extra || {}); render(); window.scrollTo(0, 0); }
-    /* 応募フォームからもどる先 */
-    function backAct() { return st.from === "quiz" ? "backquiz" : st.from === "complete" ? "complete" : "rally"; }
+    function go(screen, extra) { Object.assign(st, { screen, msg: "" }, extra || {}); render(); window.scrollTo(0, 0); }
 
     /* ---- 画面 ---- */
+    function loadingView() {
+      return `<section class="card" style="text-align:center"><p>読み込んでいます…</p></section>
+  ${st.msg ? `<button class="btn" data-act="retry">もう一度読み込む</button>` : ""}`;
+    }
     function stampRow() {
       return `<div class="stamps" aria-label="スタンプ ${count()}/5">` + SPOTS.map(s => `<div class="slot ${st.stamps[s.id] ? "got" : ""}">${st.stamps[s.id] ? s.id : "？"}</div>`).join("") + `</div>`;
     }
@@ -992,7 +1008,7 @@
     <span class="qno">ENQUETE</span>
     <p class="q">${esc(SURVEY.q)}</p>
     <div class="choices">${SURVEY.c.map((t, i) => `<button class="choice" type="button" data-act="svpick" data-i="${i}" aria-pressed="${st.svpick === i}"><span class="k">${i + 1}</span><span>${esc(t)}</span></button>`).join("")}</div>
-    <p class="small">景品を決める参考にします。選択肢は仮です。</p>
+    <p class="small">景品を決める参考にします。</p>
   </section>
   <button class="btn" data-act="svsubmit" ${st.svpick === null ? "disabled" : ""}>答えて、はじめる</button>`;
     }
@@ -1007,7 +1023,7 @@
       <dt>遊び方</dt><dd>東京造形や美術に関する謎が、構内に5つ掲示されています。謎は1から順番に解きます。1つ解くと、つぎの謎の場所のヒントが出ます。ヒントをもとに場所を探し、QRコードを読み取って答えてください。正解でも不正解でも、答えればスタンプがもらえます。</dd>
       <dt>景品</dt><dd>謎を1問でも答えた人は、景品の抽選に応募できます。5問すべて答えた人には、参加賞を必ずお渡しします（期間中の9:00〜18:00、食堂地下の自治会室でお渡し）。抽選の景品は、イベント終了後にお渡しします。</dd>
     </dl>
-    <p class="small">スタンプの記録は、最初に入力した学籍番号と結びついて残ります。学籍番号は、抽選と景品のご案内・お渡しにだけ使います。</p>
+    <p class="small">スタンプの記録は、最初に入力した学籍番号と結びついて残ります。ほかの端末でも、同じ学籍番号を入力すれば続きから遊べます。学籍番号は、抽選と景品のご案内・お渡しにだけ使います。</p>
   </section>
   <p class="footer">学生自治会</p>`;
     }
@@ -1024,7 +1040,7 @@
   <section class="card">
     <span class="qno dark">NEXT ／ 謎${n + 1}</span>
     <h2>${hintTitle(n)}</h2>
-    <p>${esc(HINTS[n])}</p>
+    <p>${esc(st.hint)}</p>
     <p class="small">場所を見つけたら、掲示されているQRコードを読み取ってください。</p>
   </section>`}
   <p class="small">抽選に応募済み：学籍番号 ${esc(st.sid)}。謎を1問でも答えた人が、抽選の対象になります。全問答えた人には、参加賞を必ずお渡しします。</p>
@@ -1035,12 +1051,10 @@
       <div class="spot ${d ? "done" : ""} ${now ? "now" : ""}">
         <div class="no">${d || now ? s.id : "？"}</div>
         <div><b>${d || now ? "謎 " + s.id : "まだ開かない謎"}</b><span class="s">${d ? "回答済み" : now ? (s.id === 1 ? "10号館食堂のQRコードを読み取ってください" : "ヒントをもとに、場所を探してください") : "謎" + (s.id - 1) + "を解くと、ヒントが出ます"}</span></div>
-        ${d ? `<span class="chip ok">獲得</span>` : now ? `<span class="chip red">つぎ</span>` : `<span class="chip">ロック中</span>`}
+        ${d ? `<button class="chip ok" style="border:0" data-act="arrive" data-id="${s.id}">解説</button>` : now ? `<span class="chip red">つぎ</span>` : `<span class="chip">ロック中</span>`}
       </div>`;
       }).join("")}
   </section>
-  <section class="sim"><span class="small">試作用：QRコードの読み取りをまねします。本番では、カメラで読み取ると直接クイズが開きます。順番どおりでないQRを読み取ると、まだ開けない案内が出ます。</span>
-    <div class="row">${SPOTS.map(s => `<button type="button" data-act="arrive" data-id="${s.id}">QR ${s.id}</button>`).join("")}</div></section>
   <button class="btn ghost" data-act="top">トップへ</button>`;
     }
     function lockedView() {
@@ -1050,7 +1064,7 @@
     <span class="chip warn" style="align-self:flex-start">まだ開けません</span>
     <h2>謎${st.spot}は、まだ解けません</h2>
     <p>謎は1から順番に解きます。先に、謎${n + 1}を解いてください。</p>
-    <div class="expl hint"><h3>${hintTitle(n)}</h3>${esc(HINTS[n])}</div>
+    <div class="expl hint"><h3>${hintTitle(n)}</h3>${esc(st.hint)}</div>
   </section>
   <button class="btn" data-act="rally">もどる</button>`;
     }
@@ -1069,21 +1083,21 @@
     ${choices}
     <p class="small">正解でも不正解でも、回答するとスタンプがもらえます。回答のやり直しはできません。</p>
   </section>
-  <button class="btn" data-act="answer" ${st.pick.length === 0 ? "disabled" : ""}>回答する</button>
+  <button class="btn" data-act="answer" ${st.pick.length === 0 ? "disabled" : ""}>${st.busy ? "送信中…" : "回答する"}</button>
   <button class="btn ghost" data-act="rally">まだ答えない</button>`;
     }
     function resultView() {
       const s = SPOTS.find(x => x.id === st.spot);
-      const rec = st.stamps[s.id];
-      const ok = rec && rec.ok;
+      const rec = st.stamps[s.id] || {};
       const n = count();
+      const latest = s.id === n;   // いちばん新しく解いた謎のときだけ、つぎのヒントを出す
       return `
   <section class="card result">
-    <div class="verdict ${ok ? "ok" : "ng"}">${ok ? "正解" : "不正解"}</div>
+    <div class="verdict ${rec.ok ? "ok" : "ng"}">${rec.ok ? "正解" : "不正解"}</div>
     <div class="big-stamp"><div><b>${s.id}</b><span>STAMP</span></div></div>
     <p><b>謎${s.id}のスタンプを獲得しました</b></p>
-    <div class="expl"><h3>解説</h3>${br(s.ex)}${s.draft ? `<div class="draft">※文面は仮です</div>` : ""}</div>
-    ${s.id < 5 ? `<div class="expl hint"><h3>つぎの謎 ${s.id + 1} の場所のヒント</h3>${esc(HINTS[s.id])}</div>` : ""}
+    <div class="expl"><h3>解説</h3>${br(rec.ex || "")}</div>
+    ${latest && n < 5 ? `<div class="expl hint"><h3>つぎの謎 ${n + 1} の場所のヒント</h3>${esc(st.hint)}</div>` : ""}
     <div style="width:100%">${stampRow()}</div>
     <p class="small">${n} / 5</p>
   </section>
@@ -1094,7 +1108,7 @@
   <section class="band"><span class="tag">COMPLETE</span><h1>全ての謎を解いた</h1><p>5つのスタンプがそろいました。</p></section>
   <section class="card">
     <h2>参加賞</h2>
-    <p>5問すべて答えた人には、参加賞を必ずお渡しします。参加賞は、イベント期間中（11月23日〜27日の9:00〜18:00）に、食堂地下の自治会室でお渡しします。</p>
+    ${st.prize === "done" ? `<div class="notice">参加賞は受け取り済みです${st.prizeAt ? "（" + esc(st.prizeAt) + "）" : ""}。</div>` : `<p>5問すべて答えた人には、参加賞を必ずお渡しします。参加賞は、イベント期間中（11月23日〜27日の9:00〜18:00）に、食堂地下の自治会室でお渡しします。この画面と学籍番号を見せてください。</p>`}
   </section>
   <section class="card">
     <h2>抽選への応募</h2>
@@ -1117,7 +1131,7 @@
         <button class="btn" type="submit">確認へ進む</button>
       </div>
     </form>
-    <p class="small">応募は、同じ学籍番号で1回だけできます。</p>
+    <p class="small">応募は、同じ学籍番号で1回だけできます。すでに参加している人は、同じ学籍番号を入力すると続きから遊べます。</p>
   </section>`;
     }
     function confirmView() {
@@ -1128,30 +1142,145 @@
       <dt>学籍番号</dt><dd style="font-family:var(--font-num);font-weight:600;font-size:22px;letter-spacing:.15em">${esc(st.stu)}</dd>
     </dl>
     <p class="small">応募したあとは、内容を変えられません。番号に間違いがないか確かめてください。</p>
-    <button class="btn" type="button" data-act="submitapply">この内容で応募する</button>
+    <button class="btn" type="button" data-act="submitapply">${st.busy ? "送信中…" : "この内容で応募する"}</button>
     <button class="btn ghost" type="button" data-act="apply">直す</button>
   </section>`;
     }
-    function doneView() {
-      const toQuiz = st.from === "quiz" && st.spot && !st.stamps[st.spot];
+
+    /* ---- 運営ページ（#admin で開く。合言葉の確認と記録の読み書きはサーバー側） ---- */
+    const AD_N = 5;
+    let adSt = { loggedIn: false, pw: "", rows: [], updated: "", err: "", filter: "all", q: "", confirmId: null, csv: false };
+    function adRows() {
+      return adSt.rows.map(p => { const s = p.s.map(v => v === null ? 0 : 1); const total = s.reduce((a, b) => a + b, 0); return { ...p, s, ok: p.s, total, elig: !!p.sid && total >= 1 }; });
+    }
+    function adFiltered() {
+      let r = adRows();
+      if (adSt.filter === "elig") r = r.filter(p => p.elig);
+      if (adSt.filter === "done") r = r.filter(p => p.total === AD_N);
+      if (adSt.filter === "unex") r = r.filter(p => p.total === AD_N && p.prize !== "done");
+      if (adSt.q) r = r.filter(p => (p.id + " " + (p.sid || "")).toLowerCase().includes(adSt.q.toLowerCase()));
+      return r;
+    }
+    function adCsv() {
+      const head = ["participant_id", ...Array.from({ length: AD_N }, (_, i) => "spot" + (i + 1)), "total", "student_id", "lottery_eligible", "survey_choice", "participation_prize"];
+      const body = adFiltered().map(p => [p.id, ...p.ok.map(v => v === null ? "" : v ? "正解" : "不正解"), p.total, p.sid || "", p.elig ? "yes" : "no", p.sv === null || p.sv === undefined ? "" : p.sv + 1, p.total === AD_N ? (p.prize === "done" ? "渡し済み" : "未交換") : "対象外"]);
+      return [head, ...body].map(r => r.join(",")).join("\n");
+    }
+    function adLoginView() {
       return `
-  <section class="band"><span class="tag">THANK YOU</span><h1>応募を受け付けました</h1></section>
-  <section class="card">
-    <dl class="info">
-      <dt>学籍番号</dt><dd style="font-family:var(--font-num);font-weight:600;font-size:22px;letter-spacing:.15em">${esc(st.sid)}</dd>
-    </dl>
-    <p>抽選は運営が行います。抽選の対象になるのは、謎を1問でも答えた人です。結果は、後日、専用のページで確認できます。確認するときは、この学籍番号を入力してください。抽選の景品は、イベント終了後にお渡しします。</p>
-    <p class="small">結果ページの公開日は、あらためてお知らせします。</p>
+  <div class="head"><h1>運営ログイン</h1><span>挑戦状</span></div>
+  <section class="card login">
+    <form id="adlogin">
+      <label class="f" for="adpw">合言葉<input id="adpw" type="password" autocomplete="off" placeholder="運営に伝えられた合言葉"></label>
+      <p class="err" role="alert">${esc(adSt.err)}</p>
+      <button class="btn" type="submit">${st.busy ? "確認中…" : "ログイン"}</button>
+    </form>
+    <p class="small">合言葉を知っている運営だけが入れます。</p>
   </section>
-  ${toQuiz ? `<button class="btn" data-act="backquiz">謎に答える</button>` : `<button class="btn ghost" data-act="rally">スタンプ画面にもどる</button>`}
-  <p class="footer">学生自治会</p>`;
+  <button class="btn ghost" type="button" data-act="adexit">参加者の画面にもどる</button>`;
+    }
+    function adDashView() {
+      const all = adRows();
+      const total = all.length, elig = all.filter(p => p.elig).length, comp = all.filter(p => p.total === AD_N).length, done = all.filter(p => p.total === AD_N && p.prize === "done").length;
+      const svN = all.filter(p => typeof p.sv === "number").length;
+      const list = adFiltered();
+      return `
+  <div class="head"><h1>運営ダッシュボード</h1><div class="tools"><button class="xbtn" type="button" data-act="ad_reload">${st.busy ? "更新中…" : "最新にする"}</button><button class="xbtn" type="button" data-act="adexit">参加者の画面へ</button></div></div>
+  <p class="small">最終更新：${esc(adSt.updated)}（スプレッドシート「participants」から読み込み）</p>
+  <div class="stats">
+    <div class="stat"><b>${total}</b><span>参加者（学籍番号を入力）</span></div>
+    <div class="stat"><b>${elig}</b><span>抽選の対象（1問以上）</span></div>
+    <div class="stat"><b>${comp}</b><span>5つ達成（参加賞の対象）</span></div>
+    <div class="stat"><b>${done}</b><span>参加賞 渡し済み</span></div>
+    <div class="stat"><b>${comp - done}</b><span>参加賞 未交換</span></div>
+  </div>
+
+  <section class="card">
+    <h2>アンケート：${esc(SURVEY.q)}</h2>
+    ${SURVEY.c.map((c, i) => {
+        const m = all.filter(p => p.sv === i), pct = svN ? Math.round(m.length / svN * 100) : 0;
+        return `<div class="svgroup">
+        <div class="svrow"><span>${i + 1}. ${esc(c)}</span><div class="bar"><i style="width:${pct}%"></i></div><b>${m.length}</b></div>
+      </div>`;
+      }).join("")}
+    <p class="small">回答した人：${svN}人。誰が何を選んだかは、下の表の「アンケート」の列で見られます。</p>
+  </section>
+
+  <div class="tools">
+    <input type="search" id="adq" placeholder="参加者番号・学籍番号で探す" value="${esc(adSt.q)}" aria-label="参加者番号・学籍番号で探す">
+    <div class="seg" role="group" aria-label="絞り込み">
+      <button type="button" data-f="all" aria-pressed="${adSt.filter === "all"}">全員</button>
+      <button type="button" data-f="elig" aria-pressed="${adSt.filter === "elig"}">抽選の対象</button>
+      <button type="button" data-f="done" aria-pressed="${adSt.filter === "done"}">5つ達成</button>
+      <button type="button" data-f="unex" aria-pressed="${adSt.filter === "unex"}">参加賞 未交換</button>
+    </div>
+    <button class="xbtn" type="button" data-act="ad_csv">CSVを表示</button>
+  </div>
+  ${adSt.err ? `<p class="notice" role="alert">${esc(adSt.err)}</p>` : ""}
+  <div class="tablebox"><table>
+    <thead><tr><th>参加者番号</th>${Array.from({ length: AD_N }, (_, i) => `<th>謎${i + 1}</th>`).join("")}<th>合計</th><th>応募</th><th>学籍番号</th><th>アンケート</th><th>参加賞</th><th></th></tr></thead>
+    <tbody>${list.length ? list.map(p => {
+        const comp = p.total === AD_N, ex = p.prize === "done";
+        return `<tr>
+        <td class="id">${esc(p.id)}</td>
+        ${p.ok.map(v => `<td><span class="dot ${v !== null ? "on" : ""}" title="${v === null ? "未回答" : v ? "正解" : "不正解"}" aria-label="${v === null ? "未回答" : v ? "正解" : "不正解"}"></span></td>`).join("")}
+        <td class="num">${p.total}/${AD_N}</td>
+        <td>${p.total >= 1 ? '<span class="chip ok">抽選の対象</span>' : '<span class="chip warn">回答なし</span>'}</td>
+        <td class="id">${p.sid ? esc(p.sid) : '<span class="small">—</span>'}</td>
+        <td>${typeof p.sv === "number" ? `<span class="chip red">${p.sv + 1}</span>` : '<span class="small">—</span>'}</td>
+        <td>${!comp ? '<span class="chip">対象外</span>' : ex ? `<span class="chip ok">渡し済み${p.at ? " " + esc(p.at) : ""}</span>` : '<span class="chip warn">未交換</span>'}</td>
+        <td>${comp ? (ex ? `<button class="xbtn" disabled>渡し済み</button>` : (adSt.confirmId === p.id ? `<button class="xbtn confirm" data-act="ad_xchg" data-id="${esc(p.id)}">本当に渡した</button>` : `<button class="xbtn" data-act="ad_xask" data-id="${esc(p.id)}">交換済みにする</button>`)) : ""}</td>
+      </tr>`;
+      }).join("") : `<tr><td colspan="12" class="small">該当する参加者がいません</td></tr>`}</tbody>
+  </table></div>
+  <p class="small">謎の列の丸にカーソルを合わせると正解・不正解が出ます。5つ達成した人に参加賞を渡したら「交換済みにする」を押してください。サーバー側でも渡し済みかを確かめるので、別の端末から同時に押しても二重配布になりません。</p>
+  ${adSt.csv ? `<div class="card"><h2>CSV（表示中の絞り込み結果）</h2><textarea id="adcsvta" readonly aria-label="CSV">${esc(adCsv())}</textarea><button class="xbtn" type="button" data-act="ad_copycsv" style="align-self:flex-start">コピーする</button><p class="small" id="adcsvmsg" role="status"></p></div>` : ""}`;
+    }
+    function adminView() { return adSt.loggedIn ? adDashView() : adLoginView(); }
+    function adLoad(res) { adSt.rows = res.rows || []; adSt.updated = res.updated || ""; }
+    function adBind() {
+      const lf = document.getElementById("adlogin");
+      if (lf) lf.addEventListener("submit", async e => {
+        e.preventDefault();
+        if (st.busy) return;
+        const pw = document.getElementById("adpw").value;
+        await busy(async () => {
+          try { adLoad(await api("admin_list", { pw })); adSt.loggedIn = true; adSt.pw = pw; adSt.err = ""; }
+          catch (err) { adSt.err = errMsg(err); }
+        });
+      });
+      const q = document.getElementById("adq");
+      if (q) q.addEventListener("input", e => { adSt.q = e.target.value; const pos = e.target.selectionStart; render(); const n = document.getElementById("adq"); n.focus(); n.setSelectionRange(pos, pos); });
+    }
+    async function adAct(a, t) {
+      if (a === "ad_xask") { adSt.confirmId = t.dataset.id; return render(); }
+      if (a === "ad_xchg") {
+        return busy(async () => {
+          try { adLoad(await api("admin_exchange", { pw: adSt.pw, id: t.dataset.id })); adSt.err = ""; }
+          catch (err) { adSt.err = errMsg(err); if (err.code === "bad_password") adSt.loggedIn = false; }
+          adSt.confirmId = null;
+        });
+      }
+      if (a === "ad_reload") {
+        return busy(async () => {
+          try { adLoad(await api("admin_list", { pw: adSt.pw })); adSt.err = ""; }
+          catch (err) { adSt.err = errMsg(err); if (err.code === "bad_password") adSt.loggedIn = false; }
+        });
+      }
+      if (a === "ad_csv") { adSt.csv = !adSt.csv; return render(); }
+      if (a === "ad_copycsv") {
+        const ta = document.getElementById("adcsvta"), m = document.getElementById("adcsvmsg");
+        const fb = () => { ta.select(); m.textContent = "選択しました。コピーしてください。"; };
+        try { navigator.clipboard.writeText(ta.value).then(() => m.textContent = "コピーしました。", fb); } catch (err) { fb(); }
+      }
     }
 
     /* ---- 描画とイベント ---- */
     function render() {
-      app.innerHTML = ({ survey: surveyView, top: topView, rally: rallyView, locked: lockedView, quiz: quizView, result: resultView, complete: completeView, apply: applyView, confirm: confirmView, done: doneView, admin: adminView }[st.screen])();
+      const views = { loading: loadingView, survey: surveyView, top: topView, rally: rallyView, locked: lockedView, quiz: quizView, result: resultView, complete: completeView, apply: applyView, confirm: confirmView, admin: adminView };
+      app.innerHTML = (st.msg ? `<p class="notice" role="alert">${esc(st.msg)}</p>` : "") + views[st.screen]();
       app.className = "wrap" + (st.screen === "admin" && adSt.loggedIn ? " wide" : "");
-      document.getElementById("chrome").hidden = st.screen === "admin";
+      if (st.busy) app.querySelectorAll("button").forEach(b => b.disabled = true);
       if (st.screen === "admin") adBind();
       const af = document.getElementById("applyform");
       if (af) af.addEventListener("submit", e => {
@@ -1164,187 +1293,71 @@
         render();
       });
     }
-    /* QRコード読み取り：#q1〜#q5 でその謎を直接開く（学籍番号・アンケートが先） */
+    /* 通信中はボタンを押せなくする */
+    async function busy(fn) { st.busy = true; render(); try { await fn(); } finally { st.busy = false; render(); } }
+
     function defaultScreen() { return !st.sid ? "apply" : st.sv === null ? "survey" : "top"; }
 
-    /* ---- 運営ページ：同じページの中。合言葉は、変換した値で照らし合わせる試作（本番ではサーバー側で確かめる） ---- */
-    const AD_HASH = "cdd1ce07dfe31d5b2aa570217da21dbb761eb7f380b061d59a937fdd749d0a28";
-    const AD_N = 5;
-    let adSt = { loggedIn: false, err: "", filter: "all", q: "", confirmId: null, csv: false };
-    const adPeople = [
-      { id: "P-0412", s: [1, 1, 1, 1, 1], prize: "done", at: "11:42", sid: "24010001", sv: 0 },
-      { id: "P-0388", s: [1, 1, 1, 1, 1], prize: "none", sid: "24010002", sv: 1 },
-      { id: "P-0451", s: [1, 1, 1, 1, 0], prize: "none", sid: "24010003", sv: 0 },
-      { id: "P-0299", s: [1, 1, 1, 0, 0], prize: "none", sid: "24010004", sv: 2 },
-      { id: "P-0467", s: [1, 1, 0, 0, 0], prize: "none", sid: "24010006", sv: 0 },
-      { id: "P-0475", s: [1, 0, 0, 0, 0], prize: "none", sid: "24010007", sv: 3 },
-      { id: "P-0502", s: [1, 1, 1, 1, 1], prize: "none", sid: "24010008", sv: 1 },
-      { id: "P-0521", s: [0, 0, 0, 0, 0], prize: "none", sid: "24010005", sv: 2 },
-      { id: "P-0530", s: [0, 0, 0, 0, 0], prize: "none", sid: "24010009", sv: 1 }
-    ];
-    async function adSha(s) {
-      const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-      return Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2, "0")).join("");
-    }
-    function adRows() {
-      const list = adPeople.slice();
-      if (st.sid || count() > 0) list.unshift({ id: "this-device", name: "この端末（あなた）", me: true, s: SPOTS.map(x => st.stamps[x.id] ? 1 : 0), prize: st.prize === "done" ? "done" : "none", at: st.prizeAt, sid: st.sid, sv: st.sv });
-      return list.map(p => { const total = p.s.reduce((a, b) => a + b, 0); return { ...p, total, elig: !!p.sid && total >= 1 }; });
-    }
-    function adFiltered() {
-      let r = adRows();
-      if (adSt.filter === "app") r = r.filter(p => p.sid);
-      if (adSt.filter === "elig") r = r.filter(p => p.elig);
-      if (adSt.filter === "done") r = r.filter(p => p.total === AD_N);
-      if (adSt.filter === "unex") r = r.filter(p => p.total === AD_N && p.prize !== "done");
-      if (adSt.q) r = r.filter(p => ((p.name || p.id) + " " + (p.sid || "")).toLowerCase().includes(adSt.q.toLowerCase()));
-      return r;
-    }
-    function adCsv() {
-      const head = ["participant_id", ...Array.from({ length: AD_N }, (_, i) => "spot" + (i + 1)), "total", "student_id", "lottery_eligible", "survey_choice", "participation_prize"];
-      const body = adFiltered().map(p => [p.id, ...p.s, p.total, p.sid || "", p.elig ? "yes" : "no", p.sv === null || p.sv === undefined ? "" : p.sv + 1, p.total === AD_N ? (p.prize === "done" ? "渡し済み" : "未交換") : "対象外"]);
-      return [head, ...body].map(r => r.join(",")).join("\n");
-    }
-    function adLoginView() {
-      return `
-  <div class="head"><h1>運営ログイン</h1><span>挑戦状</span></div>
-  <section class="card login">
-    <form id="adlogin">
-      <label class="f" for="adpw">合言葉<input id="adpw" type="password" autocomplete="off" placeholder="運営に伝えられた合言葉"></label>
-      <p class="err" role="alert">${esc(adSt.err)}</p>
-      <button class="btn" type="submit">ログイン</button>
-    </form>
-    <p class="small">合言葉を知っている運営だけが入れます。</p>
-  </section>
-  <button class="btn ghost" type="button" data-act="adexit">参加者の画面にもどる</button>
-  <p class="proto">試作です。本番では、サーバー側で合言葉を確かめます。</p>`;
-    }
-    function adDashView() {
-      const all = adRows();
-      const total = all.length, applied = all.filter(p => p.sid).length, elig = all.filter(p => p.elig).length, comp = all.filter(p => p.total === AD_N).length, done = all.filter(p => p.total === AD_N && p.prize === "done").length;
-      const list = adFiltered();
-      return `
-  <div class="head"><h1>運営ダッシュボード</h1><button class="xbtn" type="button" data-act="adexit">参加者の画面へ</button></div>
-  <p class="notice">赤い「この端末（あなた）」の行は、いまこの端末で操作した記録です。ほかの行はサンプルです。ほかの人のスマホの操作は、ここには出ません。本番では、全員の記録が、同じデータベースから自動で並びます。</p>
-  <div class="stats">
-    <div class="stat"><b>${total}</b><span>参加者</span></div>
-    <div class="stat"><b>${applied}</b><span>学籍番号を入力（応募）</span></div>
-    <div class="stat"><b>${elig}</b><span>抽選の対象（応募＋1問以上）</span></div>
-    <div class="stat"><b>${comp}</b><span>5つ達成（参加賞の対象）</span></div>
-    <div class="stat"><b>${done}</b><span>参加賞 渡し済み</span></div>
-    <div class="stat"><b>${comp - done}</b><span>参加賞 未交換</span></div>
-  </div>
-
-  <section class="card">
-    <h2>アンケート：${esc(SURVEY.q)}</h2>
-    ${SURVEY.c.map((c, i) => {
-        const m = all.filter(p => p.sv === i), pct = total ? Math.round(m.length / total * 100) : 0;
-        return `<div class="svgroup">
-        <div class="svrow"><span>${i + 1}. ${esc(c)}</span><div class="bar"><i style="width:${pct}%"></i></div><b>${m.length}</b></div>
-        ${m.length ? `<ul class="members">${m.map(p => `<li class="who">${esc(p.name || p.id)}${p.sid ? ` <small>／</small> ${esc(p.sid)}` : ` <small>（学籍番号なし）</small>`}</li>`).join("")}</ul>` : `<p class="small">選んだ人はいません</p>`}
-      </div>`;
-      }).join("")}
-    <p class="small">参加者番号は、サイトが自動でつける番号です。学籍番号は、抽選に応募した人だけ表示されます。</p>
-  </section>
-
-  <div class="tools">
-    <input type="search" id="adq" placeholder="参加者番号・学籍番号で探す" value="${esc(adSt.q)}" aria-label="参加者番号・学籍番号で探す">
-    <div class="seg" role="group" aria-label="絞り込み">
-      <button type="button" data-f="all" aria-pressed="${adSt.filter === "all"}">全員</button>
-      <button type="button" data-f="app" aria-pressed="${adSt.filter === "app"}">応募済み</button>
-      <button type="button" data-f="elig" aria-pressed="${adSt.filter === "elig"}">抽選の対象</button>
-      <button type="button" data-f="done" aria-pressed="${adSt.filter === "done"}">5つ達成</button>
-      <button type="button" data-f="unex" aria-pressed="${adSt.filter === "unex"}">参加賞 未交換</button>
-    </div>
-    <button class="xbtn" type="button" data-act="ad_csv">CSVを表示</button>
-  </div>
-  <div class="tablebox"><table>
-    <thead><tr><th>参加者番号</th>${Array.from({ length: AD_N }, (_, i) => `<th>謎${i + 1}</th>`).join("")}<th>合計</th><th>応募</th><th>学籍番号</th><th>アンケート</th><th>参加賞</th><th></th></tr></thead>
-    <tbody>${list.length ? list.map(p => {
-        const comp = p.total === AD_N, ex = p.prize === "done";
-        return `<tr class="${p.me ? "me" : ""}">
-        <td class="id">${esc(p.name || p.id)}</td>
-        ${p.s.map(v => `<td><span class="dot ${v ? "on" : ""}" aria-label="${v ? "獲得" : "未獲得"}"></span></td>`).join("")}
-        <td class="num">${p.total}/${AD_N}</td>
-        <td>${p.sid ? (p.total >= 1 ? '<span class="chip ok">応募済み</span>' : '<span class="chip warn">応募済み・回答なし</span>') : (p.total >= 1 ? '<span class="chip warn">未応募</span>' : '<span class="chip">—</span>')}</td>
-        <td class="id">${p.sid ? esc(p.sid) : '<span class="small">—</span>'}</td>
-        <td>${typeof p.sv === "number" ? `<span class="chip red">${p.sv + 1}</span>` : '<span class="small">—</span>'}</td>
-        <td>${!comp ? '<span class="chip">対象外</span>' : ex ? `<span class="chip ok">渡し済み${p.at ? " " + p.at : ""}</span>` : '<span class="chip warn">未交換</span>'}</td>
-        <td>${comp ? (ex ? `<button class="xbtn" disabled>渡し済み</button>` : (adSt.confirmId === p.id ? `<button class="xbtn confirm" data-act="ad_xchg" data-id="${esc(p.id)}">本当に渡した</button>` : `<button class="xbtn" data-act="ad_xask" data-id="${esc(p.id)}">交換済みにする</button>`)) : ""}</td>
-      </tr>`;
-      }).join("") : `<tr><td colspan="12" class="small">該当する参加者がいません</td></tr>`}</tbody>
-  </table></div>
-  <p class="small">「アンケート」の列の数字は、選んだ選択肢の番号です。5つ達成した人には、参加賞を必ず渡します。渡したときに「交換済みにする」を押してください。確認を挟んで1人につき1回だけ押せて、渡し済みの人には再度押せないため、二重配布を防げます。抽選の対象は、学籍番号を入力していて、1つ以上スタンプがある人です。</p>
-  ${adSt.csv ? `<div class="card"><h2>CSV（表示中の絞り込み結果）</h2><textarea id="adcsvta" readonly aria-label="CSV">${esc(adCsv())}</textarea><button class="xbtn" type="button" data-act="ad_copycsv" style="align-self:flex-start">コピーする</button><p class="small" id="adcsvmsg" role="status"></p></div>` : ""}`;
-    }
-    function adminView() { return adSt.loggedIn ? adDashView() : adLoginView(); }
-    function adBind() {
-      const lf = document.getElementById("adlogin");
-      if (lf) lf.addEventListener("submit", async e => {
-        e.preventDefault();
-        const v = document.getElementById("adpw").value.trim().normalize("NFKC").toLowerCase();
-        try {
-          if ((await adSha(v)) === AD_HASH) { adSt.loggedIn = true; adSt.err = ""; }
-          else adSt.err = "合言葉が違います。";
-        } catch (err) { adSt.err = "この画面では、合言葉を確かめられませんでした。"; }
-        render();
-      });
-      const q = document.getElementById("adq");
-      if (q) q.addEventListener("input", e => { adSt.q = e.target.value; const pos = e.target.selectionStart; render(); const n = document.getElementById("adq"); n.focus(); n.setSelectionRange(pos, pos); });
-    }
-    function adAct(a, t) {
-      if (a === "ad_xask") { adSt.confirmId = t.dataset.id; return render(); }
-      if (a === "ad_xchg") {
-        const d = new Date(), at = d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0"), id = t.dataset.id;
-        if (id === "this-device") { if (st.prize !== "done") { st.prize = "done"; st.prizeAt = at; save(); } }
-        else { const p = adPeople.find(x => x.id === id); if (p && p.prize !== "done") { p.prize = "done"; p.at = at; } }
-        adSt.confirmId = null; return render();
-      }
-      if (a === "ad_csv") { adSt.csv = !adSt.csv; return render(); }
-      if (a === "ad_copycsv") {
-        const ta = document.getElementById("adcsvta"), m = document.getElementById("adcsvmsg");
-        const fb = () => { ta.select(); m.textContent = "選択しました。コピーしてください。"; };
-        try { navigator.clipboard.writeText(ta.value).then(() => m.textContent = "コピーしました。", fb); } catch (err) { fb(); }
-      }
-    }
-
+    /* QRコード読み取り：URL の末尾 #q1〜#q5 でその謎を直接開く（学籍番号・アンケートが先） */
     let pending = null;
     function openSpot(id) {
       const n = count();
-      if (id <= n) return go("result", { spot: id });            // 回答済み：結果を再表示（再回答は不可）
+      if (st.stamps[id]) return go("result", { spot: id });       // 回答済み：結果を再表示（再回答は不可）
       if (id === n + 1) return go("quiz", { spot: id, pick: [] });  // つぎの謎：クイズを開く
       return go("locked", { spot: id });                         // 順番が先の謎：まだ開けない
     }
-    function openPending() { const id = pending; pending = null; return openSpot(id); }
+    function afterReady() { if (pending) { const id = pending; pending = null; return openSpot(id); } go(defaultScreen()); }
     function readHash() {
       if (location.hash === "#admin") return go("admin");
       const m = /^#q([1-5])$/.exec(location.hash); if (!m) return;
       pending = +m[1];
-      if (st.sid && st.sv !== null) openPending();   // 入力・アンケートがまだなら、そのあとで開く
+      if (st.screen !== "loading" && st.sid && st.sv !== null) afterReady();
     }
     window.addEventListener("hashchange", readHash);
-    document.addEventListener("click", e => {
-      const t = e.target.closest("button"); if (!t) return;
-      if (t.id === "reset") { try { localStorage.removeItem(LS); } catch (err) { } st = { stamps: {}, screen: "apply", spot: null, pick: [], sid: "", stu: "", agree: false, err: "", from: "rally", sv: null, svpick: null }; return go("apply"); }
+
+    /* 起動時：この端末に学籍番号があれば、サーバーから最新の記録を読み込む */
+    async function boot() {
+      if (location.hash === "#admin") return go("admin");
+      const m = /^#q([1-5])$/.exec(location.hash); if (m) pending = +m[1];
+      if (!st.sid) return go("apply");
+      st.screen = "loading"; st.msg = ""; render();
+      try { applyState(await api("state", { sid: st.sid })); afterReady(); }
+      catch (err) {
+        if (err.code === "not_found") { forget(); return go("apply"); }
+        st.msg = errMsg(err); render();
+      }
+    }
+
+    document.addEventListener("click", async e => {
+      const t = e.target.closest("button"); if (!t || st.busy) return;
       if (t.dataset.f) { adSt.filter = t.dataset.f; return render(); }
       const a = t.dataset.act; if (!a) return;
-      if (a === "adopen") return go("admin");
-      if (a === "adexit") return go(defaultScreen());
+      if (a === "retry") return boot();
+      if (a === "adexit") { history.replaceState(null, "", location.pathname + location.search); return st.sid ? go(defaultScreen()) : boot(); }
       if (a.startsWith("ad_")) return adAct(a, t);
       if (a === "svpick") { st.svpick = +t.dataset.i; return render(); }
-      if (a === "svsubmit") { if (st.svpick === null) return; st.sv = st.svpick; save(); return pending ? openPending() : go("top"); }
+      if (a === "svsubmit") {
+        if (st.svpick === null) return;
+        return busy(async () => {
+          try { applyState(await api("survey", { sid: st.sid, choice: st.svpick })); st.busy = false; afterReady(); }
+          catch (err) { st.msg = errMsg(err); if (err.code === "not_found") { forget(); st.screen = "apply"; } }
+        });
+      }
       if (a === "start" || a === "rally") return go("rally");
       if (a === "top") return go("top");
       if (a === "complete") return go("complete");
-      if (a === "backquiz") return go("quiz");                     // 最初のQRの画面にもどる（選んだ答えは残る）
-      if (a === "apply") {                                         // 最初のQRを読み取った時点から入力できる
-        const from = t.dataset.from || st.from || "rally";
-        return st.sid ? go("done", { from }) : go("apply", { err: "", from });
+      if (a === "apply") return go("apply", { err: "" });
+      if (a === "submitapply") {
+        return busy(async () => {
+          try {
+            const r = await api("register", { sid: st.stu });
+            applyState(r); st.busy = false;
+            if (r.existed) st.msg = "";   // 2台目以降：続きから
+            afterReady();
+          } catch (err) { st.msg = errMsg(err); }
+        });
       }
-      if (a === "submitapply") { if (!st.sid) { st.sid = st.stu; save(); } return st.sv === null ? go("survey") : pending ? openPending() : go("top"); }   // 同じ学籍番号の応募は1回だけ
-      if (a === "arrive") {
-        return openSpot(+t.dataset.id);
-      }
+      if (a === "arrive") return openSpot(+t.dataset.id);
       if (a === "pick") {
         const i = +t.dataset.i, s = SPOTS.find(x => x.id === st.spot);
         if (s.type === "multi") st.pick = st.pick.includes(i) ? st.pick.filter(x => x !== i) : [...st.pick, i];
@@ -1352,19 +1365,19 @@
         return render();
       }
       if (a === "answer") {
-        const s = SPOTS.find(x => x.id === st.spot);
-        if (!st.stamps[s.id]) {   // 同じ謎は1回だけ登録
-          let ok;
-          if (s.type === "all") ok = true;
-          else if (s.type === "multi") ok = st.pick.length === s.a.length && s.a.every(x => st.pick.includes(x));
-          else ok = st.pick[0] === s.a[0];
-          st.stamps[s.id] = { ok };
-        }
-        save(); return go("result");
+        if (!st.pick.length) return;
+        const spot = st.spot;
+        return busy(async () => {
+          try { applyState(await api("answer", { sid: st.sid, spot, pick: st.pick })); st.busy = false; go("result", { spot }); }
+          catch (err) {
+            if (err.code === "locked" && err.res) { applyState(err.res); st.busy = false; return go("locked", { spot }); }
+            if (err.code === "not_found") { forget(); st.busy = false; return go("apply", { msg: ERR.not_found }); }
+            st.msg = errMsg(err);
+          }
+        });
       }
     });
-    render();
-    readHash();
+    boot();
   </script>
 
 </body>
