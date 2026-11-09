@@ -7,6 +7,7 @@
   <title>挑戦状 ― あなたにこの謎が解けるか｜東京造形大学 学生自治会</title>
   <meta name="description" content="11月23日（月）〜27日（金）、東京造形大学の構内に5つの謎が隠されている。10号館食堂からスタート。全問答えた人には参加賞、抽選で豪華景品あり。主催：学生自治会">
   <meta name="theme-color" content="#0a0a0b">
+  <meta name="robots" content="noindex">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="東京造形大学 学生自治会">
@@ -19,6 +20,9 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="挑戦状。11月23日から27日まで、東京造形大学の構内で謎解き。学生自治会。">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- Apps Script への最初の通信を少し速くする（接続の準備を先にしておく） -->
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
   <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NCDCX7QH"></script>
 
   <!-- Google tag (gtag.js) -->
@@ -924,6 +928,47 @@
       cursor: default;
     }
 
+    /* 通信中の表示 */
+    .wait {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      background: rgba(10, 10, 11, .72);
+    }
+
+    .wait div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+
+    .wait i {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid var(--red-soft);
+      border-top-color: var(--red-text);
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wait i {
+        animation-duration: 3s;
+      }
+    }
+
     textarea {
       width: 100%;
       min-height: 140px;
@@ -990,8 +1035,11 @@
     /* ---- この端末に残すのは学籍番号だけ。スタンプはサーバーから読み込む ---- */
     const LS = "rally-v6";
     let st = { stamps: {}, hint: "", screen: "loading", spot: null, pick: [], sid: "", stu: "", agree: false, err: "", msg: "", busy: false, from: "rally", sv: null, svpick: null };
-    try { const s = JSON.parse(localStorage.getItem(LS)); if (s && s.sid) st.sid = s.sid; } catch (e) { }
-    function save() { try { localStorage.setItem(LS, JSON.stringify({ sid: st.sid })); } catch (e) { } }
+    // 学籍番号と、前回サーバーから受け取った記録の写しを、この端末に置いておく。
+    // 開いたときはまず写しですぐ画面を出し、裏でサーバーの最新と合わせる（待ち時間をなくすため）
+    let cached = null;
+    try { const s = JSON.parse(localStorage.getItem(LS)); if (s && s.sid) { st.sid = s.sid; if (s.state) cached = s.state; } } catch (e) { }
+    function save() { try { localStorage.setItem(LS, JSON.stringify({ sid: st.sid, state: { sid: st.sid, sv: st.sv, stamps: st.stamps, hint: st.hint, prize: st.prize, at: st.prizeAt } })); } catch (e) { } }
     function applyState(r) { st.sid = r.sid; st.sv = r.sv; st.stamps = r.stamps || {}; st.hint = r.hint || ""; st.prize = r.prize; st.prizeAt = r.at; save(); }
     function forget() { st.sid = ""; st.sv = null; st.stamps = {}; st.hint = ""; try { localStorage.removeItem(LS); } catch (e) { } }
 
@@ -1293,7 +1341,11 @@
       const views = { loading: loadingView, survey: surveyView, top: topView, rally: rallyView, locked: lockedView, quiz: quizView, result: resultView, complete: completeView, apply: applyView, confirm: confirmView, admin: adminView };
       app.innerHTML = (st.msg ? `<p class="notice" role="alert">${esc(st.msg)}</p>` : "") + views[st.screen]();
       app.className = "wrap" + (st.screen === "admin" && adSt.loggedIn ? " wide" : "");
-      if (st.busy) app.querySelectorAll("button").forEach(b => b.disabled = true);
+      if (st.busy) {
+        app.querySelectorAll("button").forEach(b => b.disabled = true);
+        const label = { quiz: "採点しています", confirm: "登録しています", admin: "読み込んでいます" }[st.screen] || "送信しています";
+        app.insertAdjacentHTML("beforeend", `<div class="wait" role="status" aria-live="polite"><div><i></i><span>${label}…</span></div></div>`);
+      }
       if (st.screen === "admin") adBind();
       const af = document.getElementById("applyform");
       if (af) af.addEventListener("submit", e => {
@@ -1333,11 +1385,32 @@
       if (location.hash === "#admin") return go("admin");
       const m = /^#q([1-5])$/.exec(location.hash); if (m) pending = +m[1];
       if (!st.sid) return go("apply");
+      if (cached) {
+        // 写しがあれば、待たずにすぐ表示。最新との照らし合わせは裏で行う
+        applyState(cached); cached = null; afterReady();
+        refresh();
+        return;
+      }
       st.screen = "loading"; st.msg = ""; render();
       try { applyState(await api("state", { sid: st.sid })); afterReady(); }
       catch (err) {
         if (err.code === "not_found") { forget(); return go("apply"); }
         st.msg = errMsg(err); render();
+      }
+    }
+    /* 裏でサーバーの最新を読み込む。回答中の画面はじゃましない */
+    async function refresh() {
+      try {
+        const r = await api("state", { sid: st.sid });
+        const before = JSON.stringify([st.sv, st.stamps, st.prize]);
+        applyState(r);
+        if (!st.busy && JSON.stringify([st.sv, st.stamps, st.prize]) !== before && ["top", "rally", "complete", "locked", "survey"].includes(st.screen)) {
+          if (st.screen === "survey" && st.sv !== null) return go("top");
+          render();
+        }
+      } catch (err) {
+        if (err.code === "not_found" && !st.busy) { forget(); go("apply", { msg: ERR.not_found }); }
+        // 通信できないときは、写しのまま続ける（回答を送るときにサーバーが確かめる）
       }
     }
 
@@ -1351,10 +1424,17 @@
       if (a === "svpick") { st.svpick = +t.dataset.i; return render(); }
       if (a === "svsubmit") {
         if (st.svpick === null) return;
-        return busy(async () => {
-          try { applyState(await api("survey", { sid: st.sid, choice: st.svpick })); st.busy = false; afterReady(); }
-          catch (err) { st.msg = errMsg(err); if (err.code === "not_found") { forget(); st.screen = "apply"; } }
-        });
+        // アンケートは待たずに先へ進み、送信は裏で行う（失敗したら2回までやり直す）
+        const choice = st.svpick;
+        st.sv = choice; save(); afterReady();
+        (async () => {
+          for (let i = 0; i < 3; i++) {
+            try { const r = await api("survey", { sid: st.sid, choice }); if (!st.busy) { applyState(r); } return; }
+            catch (err) { if (err.code === "not_found") { forget(); return go("apply", { msg: ERR.not_found }); } await new Promise(ok => setTimeout(ok, 1500)); }
+          }
+          st.sv = null; save();   // 送れなかった：次に開いたとき、もう一度アンケートを出す
+        })();
+        return;
       }
       if (a === "start" || a === "rally") return go("rally");
       if (a === "top") return go("top");
@@ -1381,7 +1461,7 @@
         if (!st.pick.length) return;
         const spot = st.spot;
         return busy(async () => {
-          try { applyState(await api("answer", { sid: st.sid, spot, pick: st.pick })); st.busy = false; go("result", { spot }); }
+          try { applyState(await api("answer", { sid: st.sid, spot, pick: st.pick })); st.busy = false; go("result", { spot }); }   // 回答済みだった場合も、サーバーの記録で結果を出す
           catch (err) {
             if (err.code === "locked" && err.res) { applyState(err.res); st.busy = false; return go("locked", { spot }); }
             if (err.code === "not_found") { forget(); st.busy = false; return go("apply", { msg: ERR.not_found }); }
